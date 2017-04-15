@@ -19,9 +19,22 @@
 
     <title>草月流 萩谷灑清の教室</title>
 
+    <!-- スタイルシート -->
+    <link rel="stylesheet" href="./css/jquery-ui.css" type="text/css" />
     <link rel="stylesheet" href="./css/saisei.shell.css" type="text/css" />
+    <link rel="stylesheet" href="./css/saisei.gallery.css" type="text/css" />
+    <link rel="stylesheet" href="./css/saisei.about.css" type="text/css" />
+
+    <!-- ライブラリ -->
+    <script src="./scripts/typings/jquery/jquery-3.1.1.js"></script>
+    <script src="./scripts/typings/jqueryui/jquery-ui.js"></script>
 
     <script src="./scripts/saisei.shell.js"></script>
+    <script>
+        $(document).ready(function () {
+            saisei.shell.initModule("#saisei");
+        });
+    </script>
 </head>
 <body>
     <div id="saisei"></div>

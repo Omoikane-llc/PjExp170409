@@ -1,2 +1,6 @@
-﻿namespace saisei.gallery {
+﻿namespace saisei {
+    class Gallery {
+    }
+
+    export var gallery = new Gallery();
 }
