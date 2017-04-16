@@ -1,6 +1,6 @@
 ﻿namespace saisei {
     export interface SaiseiElement {
-        htmlStructure: JQuery;
+        htmlStructure: string;
         initModule: Function;
     }
 }

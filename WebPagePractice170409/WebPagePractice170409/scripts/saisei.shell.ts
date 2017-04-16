@@ -1,23 +1,34 @@
 ﻿namespace saisei {
 
     class Shell implements SaiseiElement {
-        test2 = "test2";
-        htmlStructure = $('<div class="saisei-shell-head">'
-            + '<div class="saisei-shell-head-logo">'
-            + '<h1>ようこそ灑清教室へ</h1>'
-            + '</div>'
-            + '<div class="saisei-shell-head-nav"></div>'
-            + '</div>'
-            + '<div class="saisei-shell-main">'
-            + '<div class="saisei-shell-main-nav"></div>'
-            + '<div class="saisei-shell-main-content"></div>'
-            + '</div>'
-            + '<div class="saisei-shell-foot"></div>'
-            + '<div class="saisei-shell-modal"></div>');
+        private $container: JQuery;
+        //should have to remove blank space add by auto formator
+        htmlStructure = '<div class="saisei-head">'
+            +'<div class="saisei-head-logo">'
+            +'<h1>ようこそ灑清教室へ</h1>'
+            +'</div>'
+            +'</div>'
+            +'<div class="saisei-main">'
+            +'<div class="saisei-main-home">Home</div >'
+            +'<div class="saisei-main-gallery">Gallery</div>'
+            +'<div class="saisei-main-about">About</div>'
+            +'<div class="saisei-main-contents"></div>'
+            +'</div>'
+            + '<div class="saisei-foot"><h6>Copyright© SAISEI SITE All Rights Reserved.</h6></div>';
 
-        initModule = (mainId:string) => {
-            this.htmlStructure.insertAfter(mainId);
+        initModule = ($mainId: JQuery) => {
+            //alert(this.htmlStructure);
+            $mainId.html(this.htmlStructure);
+            this.$container = $mainId;
+
+            saisei.home.initModule(this.getContainer());
+            saisei.gallery.initModule(this.getContainer());
         };
+
+        getContainer = () => {
+            return this.$container;
+        };
+
     }
 
     export var shell = new Shell();

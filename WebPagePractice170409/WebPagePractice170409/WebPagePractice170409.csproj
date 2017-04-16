@@ -26,8 +26,10 @@
     <Content Include="css\jquery-ui.css" />
     <Content Include="css\saisei.about.css" />
     <Content Include="css\saisei.gallery.css" />
+    <Content Include="css\saisei.home.css" />
     <Content Include="css\saisei.shell.css" />
     <Content Include="index.html" />
+    <Content Include="layout.html" />
     <Content Include="scripts\typings\jqueryui\jquery-ui.js" />
     <Content Include="scripts\typings\jquery\jquery-3.1.1.js" />
     <Content Include="web.config" />
@@ -37,6 +39,7 @@
     <TypeScriptCompile Include="scripts\saisei.about.ts" />
     <TypeScriptCompile Include="scripts\saisei.data.ts" />
     <TypeScriptCompile Include="scripts\saisei.gallery.ts" />
+    <TypeScriptCompile Include="scripts\saisei.home.ts" />
     <TypeScriptCompile Include="scripts\saisei.interface.ts" />
     <TypeScriptCompile Include="scripts\saisei.model.ts" />
     <TypeScriptCompile Include="scripts\saisei.shell.ts" />
