@@ -6,7 +6,7 @@ var saisei;
             //should have to remove blank space add by auto formator
             this.htmlStructure = '<div class="saisei-head">'
                 + '<div class="saisei-head-logo">'
-                + '<h1>ようこそ灑清教室へ</h1>'
+                + 'ようこそ灑清教室へ'
                 + '</div>'
                 + '</div>'
                 + '<div class="saisei-main">'
@@ -22,6 +22,7 @@ var saisei;
                 _this.$container = $mainId;
                 saisei.home.initModule(_this.getContainer());
                 saisei.gallery.initModule(_this.getContainer());
+                saisei.about.initModule(_this.getContainer());
             };
             this.getContainer = function () {
                 return _this.$container;

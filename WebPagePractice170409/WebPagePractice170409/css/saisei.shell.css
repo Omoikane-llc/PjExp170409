@@ -9,7 +9,6 @@
 	-webkit-text-size-adjust: none;
 }
 h1,h2,h3,h4,h5,p,ul,ol,li,dl,dt,dd,form,figure,form {margin: 0px;padding: 0px;font-size: 100%;}
-h1{text-shadow: 5px 5px 1px #999999}
 ul {list-style-type: none;}
 ol {padding-left: 40px;padding-bottom: 15px;}
 img {border: none;max-width: 100%;height: auto;vertical-align: middle;}
@@ -58,6 +57,7 @@ a {
             text-align:left;
             text-indent:1em;
             font-size:400%;
+            text-shadow: 5px 5px 1px #999999;
             font-style:italic;
             color:#fffac0;
             border-radius: 10px;

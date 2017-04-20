@@ -1,1 +1,1 @@
-{"version":3,"file":"saisei.model.js","sourceRoot":"","sources":["saisei.model.ts"],"names":[],"mappings":"AAAA,IAAU,MAAM,CAKf;AALD,WAAU,MAAM,EAAC,CAAC;IACd;QAAA;QACA,CAAC;QAAD,YAAC;IAAD,CAAC,AADD,IACC;IAEU,YAAK,GAAG,IAAI,KAAK,EAAE,CAAC;AACnC,CAAC,EALS,MAAM,KAAN,MAAM,QAKf"}
+{"version":3,"file":"saisei.model.js","sourceRoot":"","sources":["saisei.model.ts"],"names":[],"mappings":"AAAA,IAAU,MAAM,CAQf;AARD,WAAU,MAAM,EAAC,CAAC;IACd;QAAA;QAIA,CAAC;QAAD,YAAC;IAAD,CAAC,AAJD,IAIC;IAEU,YAAK,GAAG,IAAI,KAAK,EAAE,CAAC;AACnC,CAAC,EARS,MAAM,KAAN,MAAM,QAQf"}
