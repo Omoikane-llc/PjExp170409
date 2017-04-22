@@ -33,9 +33,13 @@
             }
             return result;
         };
-        push = () => { };
-        delete = () => { };
-        length = () => { };
+        push = (fileName: string) => {
+            this.imgPathList.push(fileName);
+        };
+        delete = () => { }; // たぶん不要
+        length = () => {
+            return this.imgPathList.length;
+        };
     }
 
     export var imgData = new ImgData();

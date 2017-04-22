@@ -11,7 +11,21 @@
     <link rel="stylesheet" href="./css/saisei.home.css" type="text/css" />
     <link rel="stylesheet" href="./css/saisei.gallery.css" type="text/css" />
     <link rel="stylesheet" href="./css/saisei.about.css" type="text/css" />
-
+    <style>
+	#dialog-link {
+        width:40em;
+		padding: .4em 1em .4em 20px;
+		text-decoration: none;
+		position: relative;
+	}
+	#dialog-link span.ui-icon {
+		margin: 0 5px 0 0;
+		position: absolute;
+		left: .2em;
+		top: 50%;
+		margin-top: -8px;
+	}
+    </style>
     <!-- ライブラリ -->
     <script src="./scripts/typings/jquery/jquery-3.1.1.js"></script>
     <script src="./scripts/typings/jqueryui/jquery-ui.js"></script>
@@ -27,7 +41,11 @@
             <div class="saisei-main-gallery">Gallery</div>
             <div class="saisei-main-about">About</div>
             <div class="saisei-main-contents">
-                <div class="saisei-home-img"></div>
+                <button class="saisei-home-img"></button>
+                <!-- ui-dialog -->
+                <div id="dialog" title="Dialog Title">
+                    <div class="saisei-home-dialog"><img src="images/shell-img001.jpg" alt="test" class="saisei-home-dialog-img" /></div>
+                </div>
                 <div class="saisei-home-img-text">作品タイトル</div>
                 <div class="saisei-home-dl-title">更新情報</div>
                 <dl class="saisei-home-dl">
@@ -42,5 +60,24 @@
         </div>
         <div class="saisei-foot"><h6>Copyright© SAISEI SITE All Rights Reserved.</h6></div>
     </div>
+<script>
+    $("#dialog").dialog({
+        autoOpen: false,
+        width: 500,
+        buttons: [
+            {
+                text: "Close",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }
+        ]
+    });
+    // Link to open the dialog 
+    $(".saisei-home-img").click(function (event) {
+        $("#dialog").dialog("open");
+        event.preventDefault();
+    });
+</script>
 </body>
 </html>

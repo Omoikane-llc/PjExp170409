@@ -26,7 +26,7 @@
         bindClickHandle = ($elem: JQuery) => {
             $elem.bind("click",
                 () => {
-                    alert("click");
+                    saisei.model.requestImgData("201011sogetsuten_hagiya.jpg");
                     // ロードするデータ（写真ファイルのパス，説明，更新履歴情報）を取得
                     // タグを生成して，$homeContentsに追加する
                     // 更新履歴のテキストからは，該当するイベントのギャラリーページが生成されるようにする

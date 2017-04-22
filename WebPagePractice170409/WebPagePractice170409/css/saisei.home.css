@@ -16,10 +16,19 @@
     left:0;
     right:0;
     height:60%;
+    width:100%;
     background-color:#b6b5b5;
     background-image:url("../images/shell-img001.jpg");
     background-repeat:no-repeat;
     background-position: top center;
+}
+
+.saisei-home-dialog {
+    text-align:center;
+}
+
+.saisei-home-dialog-img {
+    
 }
 
 .saisei-home-img-text {

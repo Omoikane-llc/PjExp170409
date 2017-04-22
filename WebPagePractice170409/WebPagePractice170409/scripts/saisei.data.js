@@ -35,9 +35,13 @@ var saisei;
                 }
                 return result;
             };
-            this.push = function () { };
-            this.delete = function () { };
-            this.length = function () { };
+            this.push = function (fileName) {
+                _this.imgPathList.push(fileName);
+            };
+            this.delete = function () { }; // たぶん不要
+            this.length = function () {
+                return _this.imgPathList.length;
+            };
         }
         return ImgData;
     }());
