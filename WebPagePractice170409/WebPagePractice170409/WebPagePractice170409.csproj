@@ -37,6 +37,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="scripts\app.ts" />
     <TypeScriptCompile Include="scripts\saisei.about.ts" />
+    <TypeScriptCompile Include="scripts\saisei.const.ts" />
     <TypeScriptCompile Include="scripts\saisei.data.ts" />
     <TypeScriptCompile Include="scripts\saisei.gallery.ts" />
     <TypeScriptCompile Include="scripts\saisei.home.ts" />

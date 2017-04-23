@@ -13,6 +13,10 @@ var saisei;
                 //alert(showStr);
                 return list;
             };
+            this.requestNewsData = function (key) {
+                var resultList = saisei.newsData.select(key);
+                return resultList;
+            };
         }
         return Model;
     }());

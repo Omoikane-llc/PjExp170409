@@ -11,6 +11,11 @@
             //alert(showStr);
             return list;
         }
+
+        requestNewsData = (key: string) => {
+            var resultList: SaiseiNews[] = saisei.newsData.select(key);
+            return resultList;
+        }
     }
 
     export var model = new Model();

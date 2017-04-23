@@ -1,7 +1,7 @@
 var saisei;
 (function (saisei) {
     // データの追加場所（暫定）
-    saisei.nwesList = [
+    saisei.newsList = [
         { yyyymmdd: 20170223, yyyyNen: "2017年", mmddaaStart: "2月23日（木）", mmddaaEnd: "2月28日（火）", eventName: "草月創流90周年記念", location: "水戸京成百貨店", titleName: "茨城県支部草月いけばな展" },
         { yyyymmdd: 20161126, yyyyNen: "2016年", mmddaaStart: "11月26日（土）", mmddaaEnd: "11月27日（日）", eventName: "日立地区文化祭", location: "日立市民会館", titleName: "" },
         { yyyymmdd: 20161026, yyyyNen: "2016年", mmddaaStart: "10月26日（水）", mmddaaEnd: "10月31日（月）", eventName: "第98回草月いけばな展", location: "日本橋高島屋8階ホール", titleName: "「花は、私になる。」" },
@@ -57,6 +57,7 @@ var saisei;
         { yyyymmdd: 20061006, yyyyNen: "2006年", mmddaaStart: "10月6日", mmddaaEnd: "10月8日", eventName: "今宵の月と花と謡講", location: "日立市郷土博物館", titleName: "" },
         { yyyymmdd: 20990101, yyyyNen: "2099年", mmddaaStart: "1月1日", mmddaaEnd: "12月31日", eventName: "イベント名 テンプレート", location: "開催場所 テンプレート", titleName: "「副題 テンプレート」" }
     ];
+    saisei.prefixPath = "images/";
     saisei.imgPathList = [
         "201011sogetsuten_takamaru.jpg",
         "201011sogetsuten_hagiya.jpg",
