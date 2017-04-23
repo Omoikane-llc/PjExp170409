@@ -7,29 +7,12 @@ var saisei;
             var _this = this;
             // 暫定版 最終的にリストは外部ファイル化
             this.prefixPath = "../images/";
-            this.imgPathList = [
-                "201011sogetsuten_takamaru.jpg",
-                "201011sogetsuten_hagiya.jpg",
-                "201011sogetsuten_kouji.jpg",
-                "201011sogetsuten_omori.jpg",
-                "201411hitachi_hagiya.jpg",
-                "201411hitachi_namekawa.jpg",
-                "201411hitachi_omori.jpg",
-                "201411hitachi_kikuchi.jpg",
-                "201411hitachi_suzuki.jpg",
-                "201411kenten_gassaku.jpg",
-                "201411kenten_gassaku.jpg",
-                "201411kenten_gassaku.jpg",
-                "201411sogetsuten_hagiya.jpg",
-                "201411sogetsuten_hagiya.jpg",
-                "201411sogetsuten_omori.jpg",
-                "201411sogetsuten_omori.jpg"
-            ];
+            this.imgPathList = saisei.imgPathList;
             this.select = function (key) {
                 var result = new Array();
                 for (var i = 0; i < _this.imgPathList.length; i++) {
                     var fileName = _this.imgPathList[i];
-                    if (fileName.match(key)) {
+                    if (fileName.length > 0 && fileName.indexOf(key) !== -1) {
                         result.push(fileName);
                     }
                 }
@@ -44,6 +27,15 @@ var saisei;
             };
         }
         return ImgData;
+    }());
+    var NewsData = (function () {
+        function NewsData() {
+            this.select = function () { };
+            this.push = function () { };
+            this.delete = function () { }; // たぶん不要
+            this.length = function () { };
+        }
+        return NewsData;
     }());
     saisei.imgData = new ImgData();
 })(saisei || (saisei = {}));

@@ -10,4 +10,14 @@
         delete: Function;
         length: Function;
     }
+
+    export interface SaiseiNews {
+        yyyymmdd: number;
+        yyyyNen: string;
+        mmddaaStart: string;
+        mmddaaEnd: string;
+        eventName: string;
+        location: string;
+        titleName: string;
+    }
 }
