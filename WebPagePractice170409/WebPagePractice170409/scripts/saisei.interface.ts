@@ -20,4 +20,11 @@
         location: string;
         titleName: string;
     }
+
+    export interface SaiseiPhotoName {
+        shortName: string;
+        eventHint: string;
+        locationHint: string;
+        creatorHint: string;
+    }
 }

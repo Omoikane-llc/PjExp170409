@@ -42,6 +42,7 @@
                     result.push(record);
                 }
             }
+            this.sortDesc(result);
             return result;
         };
         push = (record: SaiseiNews) => {
@@ -66,8 +67,53 @@
             }
             return result;
         }
+
+        private sortDesc = (list: SaiseiNews[]):void => {
+
+            list.sort((n1: SaiseiNews, n2: SaiseiNews) => {
+                var comp = 0;
+                if (n1.yyyymmdd > n2.yyyymmdd) {
+                    comp = -1;
+                } else if (n1.yyyymmdd < n2.yyyymmdd) {
+                    comp = 1;
+                }
+                return comp;
+            });
+        }
+    }
+
+    class ImgRuleData implements SaiseiData {
+        private ruleList: SaiseiPhotoName[] = saisei.rulePhotoName;
+        select = (imgName: string, prop = "creator") => {
+            var result: string[] = new Array<string>();
+            for (var i = 0; i < this.ruleList.length; i++) {
+                var hint = "";
+
+                if (prop === "event") {
+                    hint = this.ruleList[i].eventHint;
+                } else if (prop === "location") {
+                    hint = this.ruleList[i].locationHint;
+                } else {
+                    hint = this.ruleList[i].creatorHint;
+                }
+
+                if (imgName.length > 0 && imgName.indexOf(this.ruleList[i].shortName) !== -1) {
+                    result.push(hint);
+                }
+            }
+            return result;
+        }
+        push = (record: SaiseiPhotoName) => {
+            this.ruleList.push(record);
+        }
+        delete = () => { }; // たぶん不要
+        length = (): number => {
+            return this.ruleList.length;
+        }
+
     }
 
     export var imgData = new ImgData();
     export var newsData = new NewsData();
+    export var imgRuleData = new ImgRuleData();
 }

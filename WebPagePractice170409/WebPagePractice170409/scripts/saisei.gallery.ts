@@ -26,7 +26,11 @@
         bindClickHandle = ($elem: JQuery) => {
             $elem.bind("click",
                 () => {
-                    alert("click");
+                    var dt = new Date();
+                    var thisYear = dt.getFullYear();
+                    dt.setMonth(dt.getMonth() - 12);
+                    var lastYear = dt.getFullYear();
+                    alert("year " + thisYear + " " + lastYear);
                     // ロードするデータ（写真ファイルのパス，説明）を取得
                     // 検索用タグを生成して，$galleryContentsに追加する
                     // 検索結果に応じて新しいページ内コンテンツを生成する

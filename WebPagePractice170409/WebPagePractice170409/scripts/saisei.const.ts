@@ -1,4 +1,9 @@
 ﻿namespace saisei {
+    // ページ表示用パラメータ properties相当
+    export var prefixPath: string = "images/";
+    export var topPagePhoto: string = "201011sogetsuten_hagiya";
+    export var newsRowNumber: number = 3;
+
     // データの追加場所（暫定）
     export var newsList: SaiseiNews[] = [
         { yyyymmdd: 20170223, yyyyNen: "2017年", mmddaaStart: "2月23日（木）", mmddaaEnd: "2月28日（火）", eventName: "草月創流90周年記念", location: "水戸京成百貨店", titleName: "茨城県支部草月いけばな展" },
@@ -57,7 +62,6 @@
         { yyyymmdd: 20990101, yyyyNen: "2099年", mmddaaStart: "1月1日", mmddaaEnd: "12月31日", eventName: "イベント名 テンプレート", location: "開催場所 テンプレート", titleName: "「副題 テンプレート」" }
     ];
 
-    export var prefixPath: string = "images/";
     export var imgPathList: string[] = [
         "201011sogetsuten_takamaru.jpg",
         "201011sogetsuten_hagiya.jpg",
@@ -77,4 +81,61 @@
         "201411sogetsuten_omori.jpg"
     ];
 
+    export var rulePhotoName: SaiseiPhotoName[] = [
+        { shortName: "_hagiya", eventHint: "", locationHint: "", creatorHint: "萩谷灑清" },
+        { shortName: "_tomita", eventHint: "", locationHint: "", creatorHint: "富田灑智" },
+        { shortName: "_namekawa", eventHint: "", locationHint: "", creatorHint: "滑川灑泰子" },
+        { shortName: "_kikuchi", eventHint: "", locationHint: "", creatorHint: "菊池灑幸" },
+        { shortName: "_takamaru", eventHint: "", locationHint: "", creatorHint: "高丸清光" },
+        { shortName: "_shida", eventHint: "", locationHint: "", creatorHint: "志田清珠" },
+        { shortName: "_omori", eventHint: "", locationHint: "", creatorHint: "大森灑泉" },
+        { shortName: "_suzuki", eventHint: "", locationHint: "", creatorHint: "鈴木灑恵" },
+        { shortName: "_kawai", eventHint: "", locationHint: "", creatorHint: "河合灑楓" },
+        { shortName: "_horikoshi", eventHint: "", locationHint: "", creatorHint: "堀越灑観" },
+        { shortName: "_kouji", eventHint: "", locationHint: "", creatorHint: "孝治蓮唱" },
+        { shortName: "_gassaku", eventHint: "", locationHint: "", creatorHint: "合作" },
+        { shortName: "_other", eventHint: "", locationHint: "", creatorHint: "その他" },
+        { shortName: "_kitami", eventHint: "", locationHint: "", creatorHint: "北見" },
+        { shortName: "_iwasaki", eventHint: "", locationHint: "", creatorHint: "岩﨑" },
+        { shortName: "_yabuki", eventHint: "", locationHint: "", creatorHint: "矢吹" },
+        { shortName: "_nohara", eventHint: "", locationHint: "", creatorHint: "野原" },
+        { shortName: "_ogasawara", eventHint: "", locationHint: "", creatorHint: "小笠原" },
+        { shortName: "_tiba", eventHint: "", locationHint: "", creatorHint: "千葉" },
+        { shortName: "_gotou", eventHint: "", locationHint: "", creatorHint: "後藤" },
+        { shortName: "_nishizawa", eventHint: "", locationHint: "", creatorHint: "西沢" },
+        { shortName: "_katue", eventHint: "", locationHint: "", creatorHint: "鈴木(克江) " },
+        { shortName: "_sekine", eventHint: "", locationHint: "", creatorHint: "関根" },
+        { shortName: "_kayane", eventHint: "", locationHint: "", creatorHint: "茅根" },
+        { shortName: "_kasuya", eventHint: "", locationHint: "", creatorHint: "粕谷" },
+        { shortName: "_usami", eventHint: "", locationHint: "", creatorHint: "宇佐美" },
+        { shortName: "_doumeki", eventHint: "", locationHint: "", creatorHint: "百目鬼" },
+        { shortName: "_miki", eventHint: "", locationHint: "", creatorHint: "菊池(美紀) " },
+        { shortName: "_ikeda", eventHint: "", locationHint: "", creatorHint: "池田" },
+        { shortName: "_endou", eventHint: "", locationHint: "", creatorHint: "遠藤" },
+        { shortName: "_senba", eventHint: "", locationHint: "", creatorHint: "仙波" },
+        { shortName: "_inoue", eventHint: "", locationHint: "", creatorHint: "井上" },
+        { shortName: "_yamamoto", eventHint: "", locationHint: "", creatorHint: "山本" },
+        { shortName: "_kawarazaki", eventHint: "", locationHint: "", creatorHint: "河原崎" },
+        { shortName: "sogetsuten", eventHint: "草月", locationHint: "", creatorHint: "" },
+        { shortName: "hitachi", eventHint: "日立", locationHint: "日立", creatorHint: "" },
+        { shortName: "kenten", eventHint: "茨城県芸術祭", locationHint: "", creatorHint: "" },
+        { shortName: "civic", eventHint: "", locationHint: "シビックセンター", creatorHint: "" },
+        { shortName: "shibuten", eventHint: "茨城県支部", locationHint: "", creatorHint: "" },
+        { shortName: "okeiko", eventHint: "", locationHint: "教室", creatorHint: "" },
+        { shortName: "hatsuike", eventHint: "迎春", locationHint: "教室", creatorHint: "" },
+        { shortName: "culture", eventHint: "", locationHint: "カルチャー", creatorHint: "" },
+        { shortName: "flowerwork", eventHint: "フラワーク", locationHint: "", creatorHint: "" },
+        { shortName: "meigetsu", eventHint: "名月", locationHint: "", creatorHint: "" },
+        { shortName: "kyodo", eventHint: "", locationHint: "郷土", creatorHint: "" },
+        { shortName: "rakugo", eventHint: "落語", locationHint: "", creatorHint: "" },
+        { shortName: "xmas", eventHint: "クリスマス", locationHint: "", creatorHint: "" },
+        { shortName: "syogatsu", eventHint: "正月", locationHint: "", creatorHint: "" },
+        { shortName: "tanabata", eventHint: "七夕", locationHint: "カルチャー", creatorHint: "" },
+        { shortName: "geijyutsukan", eventHint: "水戸市芸術祭", locationHint: "芸術館", creatorHint: "" },
+        { shortName: "kashiwa", eventHint: "", locationHint: "柏", creatorHint: "" },
+        { shortName: "shiyakusyo", eventHint: "", locationHint: "市役所", creatorHint: "" },
+        { shortName: "kokubun", eventHint: "国民文化祭", locationHint: "", creatorHint: "" },
+        { shortName: "wazatokokoro", eventHint: "技と心", locationHint: "", creatorHint: "" },
+        { shortName: "ikegei", eventHint: "いけばな芸術", locationHint: "", creatorHint: "" }
+    ];
 }

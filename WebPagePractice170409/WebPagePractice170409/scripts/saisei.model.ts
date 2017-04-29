@@ -4,12 +4,20 @@
         // 機能モジュールからのリクエストに対して必要な型のレスポンスを返す．
         requestImgData = (key: string) => {
             var list: string[] = saisei.imgData.select(key);
-            //var showStr: string = "";
-            //for (var i = 0; i < list.length; i++) {
-            //    showStr = showStr + list[i] + "\r\n";
-            //}
-            //alert(showStr);
             return list;
+        }
+
+        requestCreatorName = (imgName: string) => {
+            var result: string = "";
+
+            var tempName = imgName.substr(imgName.indexOf("_"));
+            //alert(tempName);
+            var nameList: string[] = saisei.imgRuleData.select(tempName);
+
+            // todo extract longest match item
+            result = nameList[0];
+
+            return result;
         }
 
         requestNewsData = (key: string) => {

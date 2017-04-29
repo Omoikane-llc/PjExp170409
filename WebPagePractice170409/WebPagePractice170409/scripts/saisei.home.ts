@@ -2,57 +2,59 @@
     class Home implements SaiseiElement {
         private $homeElem: JQuery;
         private $homeContents: JQuery;
-        private $home_img;
-        private $home_dialog;
-        private $home_dialog_img;
-        private $saisei_home_img_text;
-        private $home_dt0;
-        private $home_dd0;
-        private $home_dt1;
-        private $home_dd1;
-        private $home_dt2;
-        private $home_dd2;
+        private $home_img: JQuery;
+        private $home_dialog: JQuery;
+        private $home_dialog_img: JQuery;
+        private $saisei_home_img_text: JQuery;
+        private $saisei_home_dl: JQuery;
+        private $home_dt: JQuery[] = new Array<JQuery>();
+        private $home_dd: JQuery[] = new Array<JQuery>();
 
-        //htmlStructure = '<button class="saisei-home-img"></button>';
         htmlStructure =
         '<button class="saisei-home-img"></button>'
-        + '<div id="dialog" title="Dialog Title">'
+        + '<div id="dialog">'
         + '<div class="saisei-home-dialog"><img src="images/shell-img001.jpg" alt="test" class="saisei-home-dialog-img" /></div>'
         + '</div>'
         + '<div class="saisei-home-img-text">作品タイトル</div>'
-        + '<div class="saisei-home-dl-title">更新情報</div>'
-        + '<dl class="saisei-home-dl">'
-        + '<dt id = "home-dt0" class="saisei-home-dt">20XX/00/00</dt>'
-        + '<dd id = "home-dd0" class="saisei-home-dd">更新情報説明001</dd>'
-        + '<dt id = "home-dt1" class="saisei-home-dt">20XX/00/01</dt>'
-        + '<dd id = "home-dd1" class="saisei-home-dd">更新情報説明002 説明文 説明文 説明文 説明文 説明文 説明文 説明文</dd>'
-        + '<dt id = "home-dt2" class="saisei-home-dt">20XX/00/02</dt>'
-        + '<dd id = "home-dd2" class="saisei-home-dd">更新情報説明003 説明文 説明文 説明文 説明文 説明文 説明文 説明文</dd>'
-        + '</dl>';
+        + '<div class="saisei-home-dl-title">更新情報</div>';
 
         initModule = ($container: JQuery) => {
-            //alert("start initHome");
             this.$homeElem = $container.find('.saisei-main-home');
             this.$homeContents = $container.find('.saisei-main-contents');
 
-            this.setJQueryAccess(this.$homeContents.append(this.htmlStructure));
+            var homeHtml = this.htmlStructure + this.getDlTags(saisei.newsRowNumber);
+            this.setJQueryAccess(this.$homeContents.append(homeHtml));
 
             this.bindHoverHandle(this.$homeElem);
             this.bindClickHandle(this.$homeElem);
             this.bindDialogHandle();
         }
 
+        private getDlTags = (newsRowNumber: number): string => {
+            var sdl = '<dl class="saisei-home-dl">';
+            var edl = '</dl>';
+            var dtdd = "";
+
+            for (var i = 0; i < newsRowNumber; i++) {
+                var dt = '<dt id = "home-dt' + i + '" class="saisei-home-dt">YYYY年MM月DD日（aa）～MM月DD日（aa）</dt>';
+                var dd = '<dd id = "home-dd' + i +'" class="saisei-home-dd">eventName(location)を更新しました</dd>';
+                dtdd = dtdd + dt + dd;
+            }
+
+            return (sdl + dtdd + edl);
+        }
+
         private setJQueryAccess = ($elem: JQuery): void => {
             this.$home_img = $elem.find(".saisei-home-img");
             this.$home_dialog = $elem.find("#dialog");
             this.$home_dialog_img = $elem.find(".saisei-home-dialog-img");
-            this.$saisei_home_img_text = $elem.find(".saisei-home-img-text");;
-            this.$home_dt0 = $elem.find("#home-dt0");;
-            this.$home_dd0 = $elem.find("#home-dd0");;
-            this.$home_dt1 = $elem.find("#home-dt1");;
-            this.$home_dd1 = $elem.find("#home-dd1");;
-            this.$home_dt2 = $elem.find("#home-dt2");;
-            this.$home_dd2 = $elem.find("#home-dd2");;
+            this.$saisei_home_img_text = $elem.find(".saisei-home-img-text");
+            this.$saisei_home_dl = $elem.find(".saisei-home-dl");
+
+            for (var i = 0; i < saisei.newsRowNumber; i++) {
+                this.$home_dt.push($elem.find("#home-dt" + i));
+                this.$home_dd.push($elem.find("#home-dd" + i));
+            }
         }
 
         private bindHoverHandle = ($elem: JQuery) => {
@@ -69,13 +71,25 @@
                     // ロードするデータ（写真ファイルのパス，説明，更新履歴情報）を取得
                     // タグを生成して，$homeContentsに追加する
                     // 更新履歴のテキストからは，該当するイベントのギャラリーページが生成されるようにする
-                    var photoList: string[] = saisei.model.requestImgData("201011sogetsuten_hagiya");
-                    var newsList: SaiseiNews[] = saisei.model.requestNewsData("2017");
+                    var photoList: string[] = saisei.model.requestImgData(saisei.topPagePhoto);
                     //alert(newsList[0].yyyyNen + " " + newsList[0].eventName);
                     this.pushImgData(photoList);
-                    this.pushNewsData(newsList);
+                    this.pushNewsData(this.getNewsList());
                 }
             );
+        }
+
+        private getNewsList = (): SaiseiNews[] => {
+            var dt = new Date();
+
+            var thisYear = String(dt.getFullYear());
+            var thisYearList: SaiseiNews[] = saisei.model.requestNewsData(thisYear);
+
+            dt.setMonth(dt.getMonth() - 12);
+            var lastYear = String(dt.getFullYear());
+            var lastYearList: SaiseiNews[] = saisei.model.requestNewsData(lastYear);
+
+            return thisYearList.concat(lastYearList);
         }
 
         private pushImgData(photoList: string[]): void {
@@ -86,10 +100,35 @@
             this.$home_img.css('background-image', imgUrl);
             this.$home_dialog_img.attr('src', imgPath);
 
+            // title
+            var titleText = saisei.model.requestCreatorName(photoList[0]) + " 作品";
+            this.$saisei_home_img_text.text(titleText);
         }
 
         private pushNewsData(newsList: SaiseiNews[]): void {
+            for (var i = 0; i < newsList.length; i++) {
+                //alert(newsList.length + " " + newsList[i].yyyymmdd);
+                // 年月，開始日，イベント名は必須とする
+                var dtStr = newsList[i].yyyyNen + newsList[i].mmddaaStart;
+                var ddStr = newsList[i].eventName;
 
+                if (newsList[i].mmddaaEnd.length > 0) {
+                    dtStr = dtStr + " ～ " + newsList[i].mmddaaEnd;
+                }
+
+                if (newsList[i].location.length > 0) {
+                    if (i === 0) {
+                        ddStr = ddStr + "(" + newsList[i].location + ") を更新しました";
+                    } else {
+                        ddStr = ddStr + "(" + newsList[i].location + ") ";
+                    }
+                    
+                } else {
+                    ddStr = ddStr + " "
+                }
+                this.$home_dt[i].text(dtStr);
+                this.$home_dd[i].text(ddStr);
+            }
         }
 
         private bindDialogHandle = (): void => {
@@ -106,7 +145,8 @@
                 ]
             });
             this.$home_img.click(function (event) {
-                $("#dialog").dialog("open");
+                var title = $(".saisei-home-img-text").text();
+                $("#dialog").dialog("option", "title", title).dialog("open");
                 event.preventDefault();
             });
         }
