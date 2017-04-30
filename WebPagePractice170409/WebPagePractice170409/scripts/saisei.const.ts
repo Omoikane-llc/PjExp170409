@@ -3,9 +3,10 @@
     export var prefixPath: string = "images/";
     export var topPagePhoto: string = "201011sogetsuten_hagiya";
     export var newsRowNumber: number = 3;
+    export var sogetsuLink: string = "http://www.sogetsu.or.jp/study/class/areaB/8/0038738001.html";
 
     // データの追加場所（暫定）
-    export var newsList: SaiseiNews[] = [
+    export var eventListData: SaiseiNews[] = [
         { yyyymmdd: 20170223, yyyyNen: "2017年", mmddaaStart: "2月23日（木）", mmddaaEnd: "2月28日（火）", eventName: "草月創流90周年記念", location: "水戸京成百貨店", titleName: "茨城県支部草月いけばな展" },
         { yyyymmdd: 20161126, yyyyNen: "2016年", mmddaaStart: "11月26日（土）", mmddaaEnd: "11月27日（日）", eventName: "日立地区文化祭", location: "日立市民会館", titleName: "" },
         { yyyymmdd: 20161026, yyyyNen: "2016年", mmddaaStart: "10月26日（水）", mmddaaEnd: "10月31日（月）", eventName: "第98回草月いけばな展", location: "日本橋高島屋8階ホール", titleName: "「花は、私になる。」" },

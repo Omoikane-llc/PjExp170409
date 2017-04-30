@@ -26,12 +26,10 @@
     }
 
     class NewsData implements SaiseiData {
-        private newsList: SaiseiNews[] = saisei.newsList;
+        private newsList: SaiseiNews[] = saisei.eventListData;
 
         select = (key: string, prop = "property") => {
             var result: SaiseiNews[] = new Array<SaiseiNews>();
-            //var propList: string[] = Object.getOwnPropertyNames(this.newsList[0]);
-            //console.log("propList[0] " + propList[0]);
 
             // keyが年月，イベント名，開催場所のいずれかにヒットすれば返却する実装
             for (var i = 0; i < this.newsList.length; i++) {
@@ -52,6 +50,13 @@
         length = (): number => {
             return this.newsList.length;
         };
+
+        // 全イベントリスト
+        selectAll = () => {
+            var result: SaiseiNews[] = this.newsList;
+            this.sortDesc(result);
+            return result;
+        }
 
         // 型情報を保持したままプロパティリストを得る良い方法がなかった
         private concatValues = (record: SaiseiNews) => {
@@ -109,6 +114,11 @@
         delete = () => { }; // たぶん不要
         length = (): number => {
             return this.ruleList.length;
+        }
+
+        // 全データ取得
+        selectAll = () => {
+            return this.ruleList;
         }
 
     }

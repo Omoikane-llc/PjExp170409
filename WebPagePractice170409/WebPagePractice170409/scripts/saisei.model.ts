@@ -24,6 +24,23 @@
             var resultList: SaiseiNews[] = saisei.newsData.select(key);
             return resultList;
         }
+
+        requestAllEvents = () => {
+            return saisei.newsData.selectAll();
+        }
+
+        requestAllCreators = () => {
+            var resultList: SaiseiPhotoName[] = new Array<SaiseiPhotoName>();
+
+            var tempList: SaiseiPhotoName[] = saisei.imgRuleData.selectAll();
+            for (var i = 0; i < tempList.length; i++) {
+                if (tempList[i].creatorHint.length > 0) {
+                    resultList.push(tempList[i]);
+                }
+            }
+
+            return resultList;
+        }
     }
 
     export var model = new Model();

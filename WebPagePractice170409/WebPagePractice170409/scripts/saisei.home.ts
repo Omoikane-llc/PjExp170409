@@ -7,8 +7,6 @@
         private $home_dialog_img: JQuery;
         private $saisei_home_img_text: JQuery;
         private $saisei_home_dl: JQuery;
-        private $home_dt: JQuery[] = new Array<JQuery>();
-        private $home_dd: JQuery[] = new Array<JQuery>();
 
         htmlStructure =
         '<button class="saisei-home-img"></button>'
@@ -21,7 +19,7 @@
         initModule = ($container: JQuery) => {
             this.$homeElem = $container.find('.saisei-main-home');
             this.$homeContents = $container.find('.saisei-main-contents');
-            
+
             this.bindHoverHandle(this.$homeElem);
             this.bindClickHandle(this.$homeElem);
         }
@@ -42,9 +40,10 @@
                     // 更新履歴のテキストからは，該当するイベントのギャラリーページが生成されるようにする
                     this.reloadPage();
                     var photoList: string[] = saisei.model.requestImgData(saisei.topPagePhoto);
+                    this.initNewsList();
                     //alert(newsList[0].yyyyNen + " " + newsList[0].eventName);
                     this.pushImgData(photoList);
-                    this.pushNewsData(this.getNewsList());
+                    
                 }
             );
         }
@@ -78,26 +77,26 @@
             this.$saisei_home_img_text = $elem.find(".saisei-home-img-text");
             this.$saisei_home_dl = $elem.find(".saisei-home-dl");
 
-            for (var i = 0; i < saisei.newsRowNumber; i++) {
-                this.$home_dt.push($elem.find("#home-dt" + i));
-                this.$home_dd.push($elem.find("#home-dd" + i));
-            }
         }
 
-        private getNewsList = (): SaiseiNews[] => {
+        private initNewsList = (): void => {
             var dt = new Date();
 
             var thisYear = String(dt.getFullYear());
-            var thisYearList: SaiseiNews[] = saisei.model.requestNewsData(thisYear);
+            var newsList: SaiseiNews[] = saisei.model.requestNewsData(thisYear);
 
             dt.setMonth(dt.getMonth() - 12);
             var lastYear = String(dt.getFullYear());
             var lastYearList: SaiseiNews[] = saisei.model.requestNewsData(lastYear);
 
-            return thisYearList.concat(lastYearList);
+            for (var i = 0; i < lastYearList.length; i++) {
+                newsList.push(lastYearList[i]);
+            }
+
+            this.pushNewsData(newsList);
         }
 
-        private pushImgData(photoList: string[]): void {
+        private pushImgData = (photoList: string[]): void => {
             // buttonとdialogに同じソースを割りつける
             var imgPath = saisei.prefixPath + photoList[0];
             var imgUrl = 'url("' + imgPath + '")'
@@ -110,8 +109,14 @@
             this.$saisei_home_img_text.text(titleText);
         }
 
-        private pushNewsData(newsList: SaiseiNews[]): void {
-            for (var i = 0; i < newsList.length; i++) {
+        private pushNewsData = (newsList: SaiseiNews[]): void => {
+            var dtTag1 = '<dt class="saisei-home-dt">';
+            var dtTag2 = '</dt>';
+            var ddTag1 = '<dd class="saisei-home-dd">';
+            var ddTag2 = '</dd>';
+
+            var newsHtml:string = "";
+            for (var i = 0; i < saisei.newsRowNumber; i++) {
                 //alert(newsList.length + " " + newsList[i].yyyymmdd);
                 // 年月，開始日，イベント名は必須とする
                 var dtStr = newsList[i].yyyyNen + newsList[i].mmddaaStart;
@@ -127,13 +132,15 @@
                     } else {
                         ddStr = ddStr + "(" + newsList[i].location + ") ";
                     }
-                    
+
                 } else {
                     ddStr = ddStr + " "
                 }
-                this.$home_dt[i].text(dtStr);
-                this.$home_dd[i].text(ddStr);
+
+                newsHtml = newsHtml + dtTag1 + dtStr + dtTag2 + ddTag1 + ddStr + ddTag2;
             }
+            this.$saisei_home_dl.empty();
+            this.$saisei_home_dl.append(newsHtml);
         }
 
         private bindDialogHandle = (): void => {

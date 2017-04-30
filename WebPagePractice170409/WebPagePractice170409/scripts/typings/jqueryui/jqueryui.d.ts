@@ -86,8 +86,10 @@ declare namespace JQueryUI {
     interface ButtonOptions {
         disabled?: boolean;
         icons?: any;
+        icon?: string;
         label?: string;
-        text?: string|boolean;
+        text?: string | boolean;
+        showLabel?: boolean;
         click?: (event?: Event) => void;
     }
 
