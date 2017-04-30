@@ -21,12 +21,39 @@
         initModule = ($container: JQuery) => {
             this.$homeElem = $container.find('.saisei-main-home');
             this.$homeContents = $container.find('.saisei-main-contents');
+            
+            this.bindHoverHandle(this.$homeElem);
+            this.bindClickHandle(this.$homeElem);
+        }
+
+        private bindHoverHandle = ($elem: JQuery) => {
+            $elem.hover(
+                () => {
+                    $($elem).toggleClass('saisei-hover');
+                }
+            );
+        }
+
+        private bindClickHandle = ($elem: JQuery) => {
+            $elem.bind("click",
+                () => {
+                    // ロードするデータ（写真ファイルのパス，説明，更新履歴情報）を取得
+                    // タグを生成して，$homeContentsに追加する
+                    // 更新履歴のテキストからは，該当するイベントのギャラリーページが生成されるようにする
+                    this.reloadPage();
+                    var photoList: string[] = saisei.model.requestImgData(saisei.topPagePhoto);
+                    //alert(newsList[0].yyyyNen + " " + newsList[0].eventName);
+                    this.pushImgData(photoList);
+                    this.pushNewsData(this.getNewsList());
+                }
+            );
+        }
+
+        private reloadPage = (): void => {
+            this.$homeContents.empty();
 
             var homeHtml = this.htmlStructure + this.getDlTags(saisei.newsRowNumber);
             this.setJQueryAccess(this.$homeContents.append(homeHtml));
-
-            this.bindHoverHandle(this.$homeElem);
-            this.bindClickHandle(this.$homeElem);
             this.bindDialogHandle();
         }
 
@@ -37,7 +64,7 @@
 
             for (var i = 0; i < newsRowNumber; i++) {
                 var dt = '<dt id = "home-dt' + i + '" class="saisei-home-dt">YYYY年MM月DD日（aa）～MM月DD日（aa）</dt>';
-                var dd = '<dd id = "home-dd' + i +'" class="saisei-home-dd">eventName(location)を更新しました</dd>';
+                var dd = '<dd id = "home-dd' + i + '" class="saisei-home-dd">eventName(location)を更新しました</dd>';
                 dtdd = dtdd + dt + dd;
             }
 
@@ -55,28 +82,6 @@
                 this.$home_dt.push($elem.find("#home-dt" + i));
                 this.$home_dd.push($elem.find("#home-dd" + i));
             }
-        }
-
-        private bindHoverHandle = ($elem: JQuery) => {
-            $elem.hover(
-                () => {
-                    $($elem).toggleClass('saisei-hover');
-                }
-            );
-        }
-
-        private bindClickHandle = ($elem: JQuery) => {
-            $elem.bind("click",
-                () => {
-                    // ロードするデータ（写真ファイルのパス，説明，更新履歴情報）を取得
-                    // タグを生成して，$homeContentsに追加する
-                    // 更新履歴のテキストからは，該当するイベントのギャラリーページが生成されるようにする
-                    var photoList: string[] = saisei.model.requestImgData(saisei.topPagePhoto);
-                    //alert(newsList[0].yyyyNen + " " + newsList[0].eventName);
-                    this.pushImgData(photoList);
-                    this.pushNewsData(this.getNewsList());
-                }
-            );
         }
 
         private getNewsList = (): SaiseiNews[] => {
@@ -146,6 +151,7 @@
             });
             this.$home_img.click(function (event) {
                 var title = $(".saisei-home-img-text").text();
+                //alert(event.target.className);
                 $("#dialog").dialog("option", "title", title).dialog("open");
                 event.preventDefault();
             });

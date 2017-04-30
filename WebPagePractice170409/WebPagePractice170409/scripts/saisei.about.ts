@@ -27,6 +27,7 @@
             $elem.bind("click",
                 () => {
                     alert("click");
+                    this.$aboutContents.empty();
                     // 草月のリンクページを表示する
                     // リンク切れ対策も検討する
                 }
