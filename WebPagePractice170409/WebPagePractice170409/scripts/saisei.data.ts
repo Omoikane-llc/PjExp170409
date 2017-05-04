@@ -3,7 +3,7 @@
     // Dataに直接アクセスするのはModelのみ
     class ImgData implements SaiseiData {
 
-        private prefixPath: string = saisei.prefixPath;
+        //private prefixPath: string = saisei.prefixPath;
         private imgPathList: string[] = saisei.imgPathList;
 
         select = (key: string) => {
@@ -53,7 +53,8 @@
 
         // 全イベントリスト
         selectAll = () => {
-            var result: SaiseiNews[] = this.newsList;
+            var result: SaiseiNews[] = new Array<SaiseiNews>();
+            result = this.newsList;
             this.sortDesc(result);
             return result;
         }
@@ -123,7 +124,20 @@
 
     }
 
+    class LocationData implements SaiseiLocation {
+        location: string;
+        eventList: SaiseiNews[];
+
+        getObject = () => {
+            var result = new LocationData();
+            result.location = "";
+            result.eventList = new Array<SaiseiNews>();
+            return result;
+        }
+    }
+
     export var imgData = new ImgData();
     export var newsData = new NewsData();
     export var imgRuleData = new ImgRuleData();
+    export var locationData = new LocationData();
 }

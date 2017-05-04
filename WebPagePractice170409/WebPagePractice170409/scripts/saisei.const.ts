@@ -85,7 +85,7 @@
     export var rulePhotoName: SaiseiPhotoName[] = [
         { shortName: "_hagiya", eventHint: "", locationHint: "", creatorHint: "萩谷灑清" },
         { shortName: "_tomita", eventHint: "", locationHint: "", creatorHint: "富田灑智" },
-        { shortName: "_namekawa", eventHint: "", locationHint: "", creatorHint: "滑川灑泰子" },
+        { shortName: "_namekawa", eventHint: "", locationHint: "", creatorHint: "滑川灑泰" },
         { shortName: "_kikuchi", eventHint: "", locationHint: "", creatorHint: "菊池灑幸" },
         { shortName: "_takamaru", eventHint: "", locationHint: "", creatorHint: "高丸清光" },
         { shortName: "_shida", eventHint: "", locationHint: "", creatorHint: "志田清珠" },

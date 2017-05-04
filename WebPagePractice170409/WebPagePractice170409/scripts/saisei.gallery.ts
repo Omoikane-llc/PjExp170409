@@ -5,6 +5,8 @@
         private $galleryEvent: JQuery;
         private $galleryCreator: JQuery;
         private $galleryLocation: JQuery;
+        private $galleryButtonSet: JQuery;
+        private stateMap: SaiseiGalleryState = new GalleryState();
 
         htmlStructure = 
         '<div class="saisei-gallery-search">'
@@ -106,7 +108,7 @@
                     this.reloadPage();
                     this.initElements();
                     this.initMenu();
-
+                    this.initHandle();
                 }
             );
         }
@@ -118,9 +120,9 @@
         }
 
         private initElements = (): void => {
+
             $("#accordion").accordion();
-            //$("#selectmenu").selectmenu();
-            $(".saisei-gallery-select").selectmenu();
+            //$(".saisei-gallery-select").selectmenu();
             $("#dialog").dialog({
                 autoOpen: false,
                 width: 500,
@@ -161,30 +163,43 @@
             this.$galleryEvent = $elem.find("#selectmenu01");
             this.$galleryCreator = $elem.find("#selectmenu02");
             this.$galleryLocation = $elem.find("#selectmenu03");
-
+            this.$galleryButtonSet = $elem.find("saisei-gallery-buttonset");
         }
 
         private initMenu = (): void => {
             // selectMenu
+            this.initEventVal();
+            this.initCreatorVal();
+            this.initLocationVal();
+        }
+
+        private initEventVal = (): void => {
             var eventList: SaiseiNews[] = saisei.model.requestAllEvents();
-            var creatorList: SaiseiPhotoName[] = saisei.model.requestAllCreators();
             var menuEvent: string = "";
-            var menuCreator: string = "";
-            var menuLocation: string = "";
             var opTag1 = '<option>';
             var opTag1a = '<option value=';
             var opTag1b = '>';
             var opTag2 = '</option>';
 
+            // イベント名にはyyyymmddとlocationを割り振っておく
             var eventRec: string = "";
-            // イベントリストの先頭は2099年のダミーレコード
-            for (var i = 1; i < eventList.length; i++) {
-                // yyyymmdd,eventNameは必須なので存在チェックは省略
+            for (var i = 0; i < eventList.length; i++) {
+                // yyyymmdd,eventName,locationは必須なので存在チェックは省略
+                var eventVal = "{" + eventList[i].yyyymmdd + "," + eventList[i].location + "}";
                 var disEventText = eventList[i].yyyyNen + " " + eventList[i].eventName + " " + eventList[i].titleName;
-                eventRec = eventRec + opTag1a + eventList[i].yyyymmdd + opTag1b + disEventText + opTag2;
+                eventRec = eventRec + opTag1a + eventVal + opTag1b + disEventText + opTag2;
             }
             this.$galleryEvent.empty();
             this.$galleryEvent.append(eventRec);
+        }
+
+        private initCreatorVal = (): void => {
+            var creatorList: SaiseiPhotoName[] = saisei.model.requestAllCreators();
+            var menuCreator: string = "";
+            var opTag1 = '<option>';
+            var opTag1a = '<option value=';
+            var opTag1b = '>';
+            var opTag2 = '</option>';
 
             // 作者名にはshortNameを割り振っておく
             var creatorRec: string = "";
@@ -193,12 +208,128 @@
             }
             this.$galleryCreator.empty();
             this.$galleryCreator.append(creatorRec);
+        }
 
-            // todo 施設名称を選択したときに，valの複数のイベントを処理する．リスト再分類のUtilが必要
-            var locationRec: string = "<option>イベントリストと施設名称別に再分類する</option>";
+        private initLocationVal = (): void => {
+            var locationList: SaiseiLocation[] = saisei.model.requestAllLocations();
+            var menuLocation: string = "";
+            var opTag1 = '<option>';
+            var opTag1a = '<option value=';
+            var opTag1b = '>';
+            var opTag2 = '</option>';
 
+            // eventAllとlocationAllは別のリクエストにして，modelに隠ぺいする．データ構造依存は切り離す
+            var locationRec: string = "";
+            for (var i = 0; i < locationList.length; i++) {
+                var locVal = "";
+                for (var j = 0; j < locationList[i].eventList.length; j++) {
+                    locVal = locVal + "{" + locationList[i].eventList[j].yyyymmdd + "," + locationList[i].eventList[j].eventName + "}";
+                }
+                locationRec = locationRec + opTag1a + locVal + opTag1b + locationList[i].location + opTag2;
+            }
             this.$galleryLocation.empty();
             this.$galleryLocation.append(locationRec);
+        }
+
+        private initHandle = (): void => {
+            //alert("initHandle");
+            this.initButton01Handle($("#button-icon01"));
+            this.initButton02Handle($("#button-icon02"));
+            this.initButton03Handle($("#button-icon03"));
+            this.initButton04Handle($("#button-icon04"));
+
+            this.initChange01Handle(this.$galleryEvent);
+            this.initChange02Handle(this.$galleryCreator);
+            this.initChange03Handle(this.$galleryLocation);
+        }
+
+        private initButton01Handle = ($elem: JQuery): void => {
+            $elem.bind("click",() => {
+                if (this.stateMap.isStartPage) {
+                    alert("not need action");
+                } else if (this.stateMap.hasMulchPages) {
+                    alert("go to start page");
+                    this.stateMap.isStartPage = true;
+                } else {
+                    alert("not need action"); // dummy action
+                }
+            });
+        }
+
+        private initButton02Handle = ($elem: JQuery): void => {
+            $elem.bind("click", () => {
+                if (this.stateMap.isStartPage) {
+                    alert("not need action");
+                } else if (this.stateMap.hasMulchPages) {
+                    alert("go back previous page");
+                } else {
+                    alert("not need action"); // dummy action
+                }
+            });
+        }
+
+        private initButton03Handle = ($elem: JQuery): void => {
+            $elem.bind("click", () => {
+                if (this.stateMap.isEndPage) {
+                    alert("not need action");
+                } else if (this.stateMap.hasMulchPages) {
+                    alert("go to next page");
+                } else {
+                    alert("not need action"); // dummy action
+                }
+            });
+        }
+
+        private initButton04Handle = ($elem: JQuery): void => {
+            $elem.bind("click", () => {
+                if (this.stateMap.isEndPage) {
+                    alert("not need action");
+                } else if (this.stateMap.hasMulchPages) {
+                    alert("go to end page");
+                    this.stateMap.isEndPage = true;
+                } else {
+                    alert("not need action"); // dummy action
+                }
+            });
+        }
+
+        private initChange01Handle = ($elem: JQuery): void => {
+            $elem.selectmenu({
+                change: function (event, ui) {
+                    //alert("change");
+                    alert("label " + ui.item.label + " value " + ui.item.value);
+                }
+            });
+        }
+
+        private initChange02Handle = ($elem: JQuery): void => {
+            $elem.selectmenu({
+                change: function (event, ui) {
+                    //alert("change");
+                    alert("label " + ui.item.label + " value " + ui.item.value);
+                }
+            });
+        }        
+
+        private initChange03Handle = ($elem: JQuery): void => {
+            $elem.selectmenu({
+                change: function (event, ui) {
+                    //alert("change");
+                    alert("label " + ui.item.label + " value " + ui.item.value);
+                }
+            });
+        }
+    }
+
+    class GalleryState implements SaiseiGalleryState {
+        isStartPage: boolean;
+        hasMulchPages: boolean;
+        isEndPage: boolean;
+
+        constructor() {
+            this.isStartPage = true;
+            this.hasMulchPages = false;
+            this.isEndPage = true;
         }
     }
 

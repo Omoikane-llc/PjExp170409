@@ -639,7 +639,13 @@ declare namespace JQueryUI {
     }
 
     interface SelectMenuUIParams {
-        item?: JQuery;
+        //item?: JQuery;
+        item?: SelectMenuUIItem;
+    }
+
+    interface SelectMenuUIItem extends JQuery {
+        label?: string;
+        value?: string;
     }
 
     interface SelectMenuEvent {

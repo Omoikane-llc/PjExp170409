@@ -27,4 +27,15 @@
         locationHint: string;
         creatorHint: string;
     }
+
+    export interface SaiseiLocation {
+        location: string;
+        eventList: SaiseiNews[];
+    }
+
+    export interface SaiseiGalleryState {
+        isStartPage: boolean;
+        hasMulchPages: boolean;
+        isEndPage: boolean;
+    }
 }
