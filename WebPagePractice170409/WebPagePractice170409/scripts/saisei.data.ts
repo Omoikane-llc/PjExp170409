@@ -4,12 +4,38 @@
     class ImgData implements SaiseiData {
 
         //private prefixPath: string = saisei.prefixPath;
-        private imgPathList: string[] = saisei.imgPathList;
+        private imgPathList: string[];
+
+        constructor() {
+            var temp = saisei.imgPathList;
+            temp.sort((str1: string, str2: string) => {
+                var comp = 0;
+                var n1 = Number(str1.substring(0, 6));
+                var n2 = Number(str2.substring(0, 6));
+                var p1 = str1.indexOf(saisei.imgOrderKey);
+                var p2 = str2.indexOf(saisei.imgOrderKey);
+
+                if (n1 > n2) {
+                    comp = -1;
+                } else if (n1 < n2) {
+                    comp = 1;
+                } else {
+                    if (p1 > p2) {
+                        comp = -1;
+                    } else if (p1 < p2) {
+                        comp = 1;
+                    }
+                }
+                return comp;
+            });
+            this.imgPathList = temp;
+        }
 
         select = (key: string) => {
             var result:string[] = new Array<string>();
             for (var i = 0; i < this.imgPathList.length; i++) {
                 var fileName = this.imgPathList[i];
+                //alert(fileName + " " + key);
                 if (fileName.length > 0 && fileName.indexOf(key) !== -1) {
                     result.push(fileName);
                 }
@@ -119,7 +145,11 @@
 
         // 全データ取得
         selectAll = () => {
-            return this.ruleList;
+            var result: SaiseiPhotoName[] = new Array<SaiseiPhotoName>();
+            for (var i = 0; i < this.ruleList.length; i++) {
+                result.push(this.ruleList[i]);
+            }
+            return result;
         }
 
     }

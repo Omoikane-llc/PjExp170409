@@ -3,7 +3,9 @@
     export var prefixPath: string = "images/";
     export var topPagePhoto: string = "201011sogetsuten_hagiya";
     export var newsRowNumber: number = 3;
+    export var maxPhotoInPage: number = 5;
     export var sogetsuLink: string = "http://www.sogetsu.or.jp/study/class/areaB/8/0038738001.html";
+    export var imgOrderKey: string = "hagiya";
 
     // データの追加場所（暫定）
     export var eventListData: SaiseiNews[] = [
@@ -74,12 +76,8 @@
         "201411hitachi_kikuchi.jpg",
         "201411hitachi_suzuki.jpg",
         "201411kenten_gassaku.jpg",
-        "201411kenten_gassaku.jpg",
-        "201411kenten_gassaku.jpg",
-        "201411sogetsuten_hagiya.jpg",
-        "201411sogetsuten_hagiya.jpg",
-        "201411sogetsuten_omori.jpg",
-        "201411sogetsuten_omori.jpg"
+        "201410sogetsuten_hagiya.jpg",
+        "201410sogetsuten_omori.jpg"
     ];
 
     export var rulePhotoName: SaiseiPhotoName[] = [

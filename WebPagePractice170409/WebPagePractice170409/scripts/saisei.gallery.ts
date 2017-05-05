@@ -2,12 +2,16 @@
     class Gallery implements SaiseiElement {
         private $galleryElem: JQuery;
         private $galleryContents: JQuery;
+        private $gallerySearch: JQuery;
         private $galleryEvent: JQuery;
         private $galleryCreator: JQuery;
         private $galleryLocation: JQuery;
         private $galleryButtonSet: JQuery;
-        private stateMap: SaiseiGalleryState = new GalleryState();
+        private $galleryImages: JQuery;
 
+        private imgBlockIds: string[] = ["#galleryImgBlock01", "#galleryImgBlock02", "#galleryImgBlock03", "#galleryImgBlock04", "#galleryImgBlock05"];
+        private stateMap: SaiseiGalleryState = new GalleryState();
+         
         htmlStructure = 
         '<div class="saisei-gallery-search">'
         + '    <div id="accordion">'
@@ -15,52 +19,40 @@
         + '        <div>'
         + '            <select id="selectmenu01" class="saisei-gallery-select">'
         + '                <option>イベント名を選択</option>'
-        + '                <option>Slow</option>'
-        + '                <option>Medium</option>'
-        + '                <option>Fast</option>'
-        + '                <option>Faster</option>'
         + '            </select>'
         + '        </div>'
         + '        <h3>作者名</h3>'
         + '        <div>'
         + '            <select id="selectmenu02" class="saisei-gallery-select">'
         + '                <option>作者名を選択</option>'
-        + '                <option>Slow</option>'
-        + '                <option>Medium</option>'
-        + '                <option>Fast</option>'
-        + '                <option>Faster</option>'
         + '            </select>'
         + '        </div>'
         + '        <h3>施設・場所名</h3>'
         + '        <div>'
         + '            <select id="selectmenu03" class="saisei-gallery-select">'
         + '                <option>施設・場所名を選択</option>'
-        + '                <option>Slow</option>'
-        + '                <option>Medium</option>'
-        + '                <option>Fast</option>'
-        + '                <option>Faster</option>'
         + '            </select>'
         + '        </div>'
         + '    </div>'
         + '</div>'
         + '<!-- 横並びは前後のタグの改行を削除する 余白対策 -->'
         + '<div class="saisei-gallery-upperblock">'
-        + '    <div class="saisei-gallery-block">'
+        + '    <div id="galleryImgBlock01" class="saisei-gallery-block">'
         + '        <div class="saisei-gallery-upperimg-text">作品タイトル</div>'
         + '        <button class="saisei-gallery-image" style="background-image:url('+"'images/shell-img001.jpg'"+')"></button> '
-        + '    </div><div class="saisei-gallery-block">'
+        + '    </div><div id="galleryImgBlock02" class="saisei-gallery-block">'
         + '        <div class="saisei-gallery-upperimg-text">作品タイトル</div>'
         + '        <button class="saisei-gallery-image" style="background-image:url(' + "'images/shell-img001.jpg'" +')"></button> '
-        + '    </div><div class="saisei-gallery-block">'
+        + '    </div><div id="galleryImgBlock03" class="saisei-gallery-block">'
         + '        <div class="saisei-gallery-upperimg-text">作品タイトル</div>'
         + '        <button class="saisei-gallery-image" style="background-image:url(' + "'images/shell-img001.jpg'" +')"></button> '
         + '    </div>'
         + '</div>'
         + '<div class="saisei-gallery-lowerblock">'
-        + '    <div class="saisei-gallery-block">'
+        + '    <div id="galleryImgBlock04" class="saisei-gallery-block">'
         + '        <button class="saisei-gallery-image" style="background-image:url(' + "'images/shell-img001.jpg'" +')"></button> '
         + '        <div class="saisei-gallery-lowerimg-text">作品タイトル</div>'
-        + '    </div><div class="saisei-gallery-block">'
+        + '    </div><div id="galleryImgBlock05" class="saisei-gallery-block">'
         + '        <button class="saisei-gallery-image" style="background-image:url(' + "'images/shell-img001.jpg'" +')"></button> '
         + '        <div class="saisei-gallery-lowerimg-text">作品タイトル</div>'
         + '    </div><div class="saisei-gallery-block">'
@@ -75,7 +67,7 @@
         + '    </div>'
         + '<!-- ui-dialog -->'
         + '<div id="dialog" title="Dialog Title">'
-        + '    <div class="saisei-gallery-dialog"><img src="images/shell-img001.jpg" alt="test" class="saisei-gallery-dialog-img" /></div>'
+        + '    <div class="saisei-gallery-dialog"><img src="images/shell-img001.jpg" alt="jpg photo data" class="saisei-gallery-dialog-img" /></div>'
         + '</div>'
         + '</div>'
 
@@ -122,7 +114,7 @@
         private initElements = (): void => {
 
             $("#accordion").accordion();
-            //$(".saisei-gallery-select").selectmenu();
+
             $("#dialog").dialog({
                 autoOpen: false,
                 width: 500,
@@ -135,11 +127,22 @@
                     }
                 ]
             });
-            // Link to open the dialog 
-            $(".saisei-gallery-image").click(function (event) {
-                $("#dialog").dialog("open");
-                event.preventDefault();
-            });
+            // Link to open the dialog
+            $(".saisei-gallery-upperblock,.saisei-gallery-lowerblock")
+                .bind("openDialog", (event: JQueryEventObject, data: string) => {
+
+                    var tempText: string[] = data.split(",");
+                    var title = tempText[0];
+                    var imgPath = saisei.utils.getPathFromStyleUri(tempText[1]);
+
+                    // データのある時だけdialog表示
+                    if (imgPath.indexOf(".jpg") !== -1) {
+                        $(".saisei-gallery-dialog-img").attr('src', imgPath);
+                        $("#dialog").dialog("option", "title", title).dialog("open");
+                        event.preventDefault();
+                    }
+
+            }); 
 
             $("#button-icon01").button({
                 icon: "ui-icon ui-icon-seek-first",
@@ -160,10 +163,13 @@
         }
 
         private setJQueryAccess = ($elem: JQuery): void => {
+            this.$gallerySearch = $elem.find('.saisei-gallery-search');
             this.$galleryEvent = $elem.find("#selectmenu01");
             this.$galleryCreator = $elem.find("#selectmenu02");
             this.$galleryLocation = $elem.find("#selectmenu03");
-            this.$galleryButtonSet = $elem.find("saisei-gallery-buttonset");
+            this.$galleryImages = $elem.find(".saisei-gallery-upperblock");
+            this.$galleryButtonSet = $elem.find(".saisei-gallery-buttonset");
+
         }
 
         private initMenu = (): void => {
@@ -206,8 +212,7 @@
             for (var i = 0; i < creatorList.length; i++) {
                 creatorRec = creatorRec + opTag1a + creatorList[i].shortName + opTag1b + creatorList[i].creatorHint + opTag2;
             }
-            this.$galleryCreator.empty();
-            this.$galleryCreator.append(creatorRec);
+            this.$galleryCreator.empty().append(creatorRec);
         }
 
         private initLocationVal = (): void => {
@@ -227,8 +232,7 @@
                 }
                 locationRec = locationRec + opTag1a + locVal + opTag1b + locationList[i].location + opTag2;
             }
-            this.$galleryLocation.empty();
-            this.$galleryLocation.append(locationRec);
+            this.$galleryLocation.empty().append(locationRec);
         }
 
         private initHandle = (): void => {
@@ -241,6 +245,9 @@
             this.initChange01Handle(this.$galleryEvent);
             this.initChange02Handle(this.$galleryCreator);
             this.initChange03Handle(this.$galleryLocation);
+
+            this.initChangeImgListHandle();
+            this.initChangeImgSrcHandle();
         }
 
         private initButton01Handle = ($elem: JQuery): void => {
@@ -296,17 +303,24 @@
         private initChange01Handle = ($elem: JQuery): void => {
             $elem.selectmenu({
                 change: function (event, ui) {
-                    //alert("change");
-                    alert("label " + ui.item.label + " value " + ui.item.value);
+                    var values: string[] = saisei.utils.parseTuple(ui.item.value);
+                    var selectKey: string = saisei.utils.getKeyByEvent(values[0], ui.item.label);
+                    //alert("selectKey " + selectKey + " label " + ui.item.label + " value " + ui.item.value);
+                    var imgList: string[] = saisei.model.requestImgData(selectKey);
+                    //alert(imgList.toString());
+                    $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
+                    //$("#img01").trigger("changeImgList",imgList);
                 }
             });
+
         }
 
         private initChange02Handle = ($elem: JQuery): void => {
             $elem.selectmenu({
                 change: function (event, ui) {
-                    //alert("change");
-                    alert("label " + ui.item.label + " value " + ui.item.value);
+                    var imgList: string[] = saisei.model.requestImgData(ui.item.value);
+                    //alert(imgList.toString());
+                    $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
                 }
             });
         }        
@@ -315,9 +329,94 @@
             $elem.selectmenu({
                 change: function (event, ui) {
                     //alert("change");
-                    alert("label " + ui.item.label + " value " + ui.item.value);
+                    //alert("label " + ui.item.label + " value " + ui.item.value);
+                    var imgList: string[] = new Array<string>();
+                    var values: string[] = saisei.utils.parseTuple(ui.item.value);
+                    for (var i = 0; (2 * i) < values.length; i++) {
+                        var selectKey: string = saisei.utils.getKeyByEvent(values[2 * i], values[2 * i + 1]);
+                        var tempList: string[] = saisei.model.requestImgData(selectKey);
+                        for (var j = 0; j < tempList.length; j++) {
+                            imgList.push(tempList[j]);
+                        }                                               
+                    }
+                    //alert(imgList.toString());
+                    $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
                 }
             });
+        }
+
+        private getImgListFromEvent = (yyyymmdd: string, eventName: string) => {
+            var selectKey: string = saisei.utils.getKeyByEvent(yyyymmdd, eventName);
+            var imgList: string[] = saisei.model.requestImgData(selectKey);
+            return imgList;
+        }
+
+        private initChangeImgListHandle = (): void => {
+            this.$gallerySearch.bind("changeImgList", (event: JQueryEventObject, imgList: string) => {
+                this.initStateMap(imgList);
+
+                var disText = "";
+                if (this.stateMap.hasMulchPages) {
+                    disText = "続きがあります";
+                } else {
+                    disText = "続きはありません";
+                }
+                $(".saisei-gallery-blockdummy").text(disText);
+
+                // Trigger imgSrc
+                $(".saisei-gallery-image").trigger("changeImgSrc");
+            });
+        }
+
+        private initChangeImgSrcHandle = (): void => {
+            for (var i = 0; i < this.imgBlockIds.length; i++) {
+                this.changeImgSrcImp(i); // ここに直接Impの中身を書くとiがクロージャから外れてしまう
+            }
+        }
+
+        private changeImgSrcImp = (index: number) => {
+            $(this.imgBlockIds[index]).bind("changeImgSrc", () => {
+                var divTag1a = '<div class="saisei-gallery-upperimg-text">';
+                var divTag1b = '</div>';
+                var btnTag1a = '<button class="saisei-gallery-image" style="background-image:url(';
+                var btnTag1b = ')"></button>';
+                var imgIndex = this.stateMap.startIndex + index;
+                var imgPath = saisei.prefixPath + this.stateMap.imgList[imgIndex];
+
+                //todo対症療法的なので後で修正
+                var titleText = "";
+                if (this.stateMap.imgList.length > imgIndex && this.stateMap.imgList[imgIndex].length > 0) {
+                    titleText = saisei.model.requestCreatorName(this.stateMap.imgList[imgIndex]) + " 作品";
+                }
+
+                var blockHtml = "";
+                if (index < 3) {
+                    blockHtml = divTag1a + titleText + divTag1b + btnTag1a + imgPath + btnTag1b;
+                } else {
+                    blockHtml = btnTag1a + imgPath + btnTag1b + divTag1a + titleText + divTag1b;
+                }
+
+                $(this.imgBlockIds[index]).empty().append(blockHtml);
+            }).bind("click", () => {
+                var title = $(this.imgBlockIds[index]).text();
+                var srcStr = $(this.imgBlockIds[index]).find('button').attr('style');
+                $(this.imgBlockIds[index]).trigger('openDialog', title + "," + srcStr);
+                //alert("$(this.imgBlockIds[index]).trigger('openDialog');");
+            });
+        }
+
+        private initStateMap = (imgList: string): void => {
+            var list: string[] = imgList.split(",");
+            this.stateMap.startIndex = 0;
+            this.stateMap.imgList = list;
+            this.stateMap.isStartPage = true;
+            this.stateMap.isEndPage = false;
+            if (list.length > saisei.maxPhotoInPage) {
+                this.stateMap.hasMulchPages = true;
+            } else {
+                this.stateMap.hasMulchPages = false;
+            }
+            //alert("list.length " + list.length + "this.stateMap.hasMulchPages " + this.stateMap.hasMulchPages);
         }
     }
 
@@ -325,11 +424,15 @@
         isStartPage: boolean;
         hasMulchPages: boolean;
         isEndPage: boolean;
+        imgList: string[];
+        startIndex: number;
 
         constructor() {
             this.isStartPage = true;
             this.hasMulchPages = false;
             this.isEndPage = true;
+            this.imgList = new Array<string>();
+            this.startIndex = 0;
         }
     }
 

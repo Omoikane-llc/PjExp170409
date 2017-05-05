@@ -139,8 +139,7 @@
 
                 newsHtml = newsHtml + dtTag1 + dtStr + dtTag2 + ddTag1 + ddStr + ddTag2;
             }
-            this.$saisei_home_dl.empty();
-            this.$saisei_home_dl.append(newsHtml);
+            this.$saisei_home_dl.empty().append(newsHtml);
         }
 
         private bindDialogHandle = (): void => {

@@ -10,7 +10,7 @@
         requestCreatorName = (imgName: string) => {
             var result: string = "";
 
-            var tempName = imgName.substr(imgName.indexOf("_"));
+            var tempName = imgName.substring(imgName.indexOf("_"));
             //alert(tempName);
             var nameList: string[] = saisei.imgRuleData.select(tempName);
 
@@ -98,6 +98,64 @@
                 }
                 return comp;
             });
+        }
+
+        requestEventHints = (eventName: string) => {
+            var result = "";
+            var temp: saisei.SaiseiPhotoName[] = new Array<SaiseiPhotoName>();
+
+            var allHints: saisei.SaiseiPhotoName[] = saisei.imgRuleData.selectAll();
+            for (var i = 0; i < allHints.length; i++) {
+                if (allHints[i].eventHint.length > 0 && eventName.indexOf(allHints[i].eventHint) !== -1) {
+                    temp.push(allHints[i]);
+                }
+            }
+
+            // 該当なしは""，複数候補の場合は最も長いものを返す
+            if (temp.length !== 0) {
+                temp.sort((n1: SaiseiPhotoName, n2: SaiseiPhotoName) => {
+                    var comp = 0;
+                    if (n1.eventHint.length > n2.eventHint.length) {
+                        comp = -1;
+                    } else if (n1.eventHint.length < n2.eventHint.length) {
+                        comp = 1;
+                    }
+
+                    return comp;
+                });
+                result = temp[0].shortName;
+            }
+
+            return result;
+        }
+
+        requestLocationHints = (locationName: string) => {
+            var result = "";
+            var temp: saisei.SaiseiPhotoName[] = new Array<SaiseiPhotoName>();
+
+            var allHints: saisei.SaiseiPhotoName[] = saisei.imgRuleData.selectAll();
+            for (var i = 0; i < allHints.length; i++) {
+                if (allHints[i].locationHint.length > 0 && locationName.indexOf(allHints[i].locationHint) !== -1) {
+                    temp.push(allHints[i]);
+                }
+            }
+
+            // 該当なしは""，複数候補の場合は最も長いものを返す
+            if (temp.length !== 0) {
+                temp.sort((n1: SaiseiPhotoName, n2: SaiseiPhotoName) => {
+                    var comp = 0;
+                    if (n1.locationHint.length > n2.locationHint.length) {
+                        comp = -1;
+                    } else if (n1.locationHint.length < n2.locationHint.length) {
+                        comp = 1;
+                    }
+
+                    return comp;
+                });
+                result = temp[0].shortName;
+            }
+
+            return result;
         }
     }
 

@@ -37,5 +37,7 @@
         isStartPage: boolean;
         hasMulchPages: boolean;
         isEndPage: boolean;
+        imgList: string[];
+        startIndex: number;
     }
 }
