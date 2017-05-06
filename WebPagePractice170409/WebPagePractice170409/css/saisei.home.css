@@ -50,16 +50,17 @@
 }
 
 .saisei-home-dl {
-    padding-left: 4em;
+    padding-left: 2em;
 	margin-bottom: 1em;
 }
 
 .saisei-home-dt {
     font-weight: bold;
 	float: left;
-	width: 24em;
+	width: 22em;
 }
 
 .saisei-home-dd {
-    padding-left: 8em;
+    font-weight: bold;
+    padding-left: 22em;
 }
