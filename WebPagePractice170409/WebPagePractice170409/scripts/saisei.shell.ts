@@ -16,6 +16,8 @@
             +'</div>'
             + '<div class="saisei-foot"><h6>Copyright© SAISEI SITE All Rights Reserved.</h6></div>';
 
+        requestText: string = "";
+
         initModule = ($mainId: JQuery) => {
             //alert(this.htmlStructure);
             $mainId.html(this.htmlStructure);
@@ -24,6 +26,8 @@
             saisei.home.initModule(this.getContainer());
             saisei.gallery.initModule(this.getContainer());
             saisei.about.initModule(this.getContainer());
+
+            $(".saisei-main-home").trigger("click");
         };
 
         getContainer = () => {

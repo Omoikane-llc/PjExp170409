@@ -66,18 +66,37 @@
     ];
 
     export var imgPathList: string[] = [
-        "201011sogetsuten_takamaru.jpg",
         "201011sogetsuten_hagiya.jpg",
         "201011sogetsuten_kouji.jpg",
         "201011sogetsuten_omori.jpg",
+        "201011sogetsuten_takamaru.jpg",
+        "201410sogetsuten_hagiya.jpg",
+        "201410sogetsuten_omori.jpg",
         "201411hitachi_hagiya.jpg",
+        "201411hitachi_kikuchi.jpg",
         "201411hitachi_namekawa.jpg",
         "201411hitachi_omori.jpg",
-        "201411hitachi_kikuchi.jpg",
         "201411hitachi_suzuki.jpg",
         "201411kenten_gassaku.jpg",
-        "201410sogetsuten_hagiya.jpg",
-        "201410sogetsuten_omori.jpg"
+        "201605hitachi_hagiya.jpg",
+        "201605hitachi_kikuchi.jpg",
+        "201605hitachi_namekawa.jpg",
+        "201605hitachi_omori.jpg",
+        "201605hitachi_other.jpg",
+        "201605hitachi_suzuki.jpg",
+        "201610kenten_gassaku.jpg",
+        "201610kenten_other.jpg",
+        "201610sogetsuten_hagiya.jpg",
+        "201610sogetsuten_kouji.jpg",
+        "201610sogetsuten_omori.jpg",
+        "201610sogetsuten_tomita.jpg",
+        "201702shibuten_gassaku.jpg",
+        "201702shibuten_kawai.jpg",
+        "201702shibuten_kitami.jpg",
+        "201702shibuten_kouji.jpg",
+        "201702shibuten_suzuki.jpg",
+        "201702shibuten_takamaru.jpg",
+        "201702shibuten_tomita.jpg"
     ];
 
     export var rulePhotoName: SaiseiPhotoName[] = [

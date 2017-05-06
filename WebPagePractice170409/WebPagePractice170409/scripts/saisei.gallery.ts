@@ -66,7 +66,7 @@
         + '        <div class="saisei-gallery-blockdummy">続きがあります</div>'
         + '    </div>'
         + '<!-- ui-dialog -->'
-        + '<div id="dialog" title="Dialog Title">'
+        + '<div id="gallery-dialog" title="Dialog Title">'
         + '    <div class="saisei-gallery-dialog"><img src="images/shell-img001.jpg" alt="jpg photo data" class="saisei-gallery-dialog-img" /></div>'
         + '</div>'
         + '</div>'
@@ -78,7 +78,6 @@
 
             this.bindHoverHandle(this.$galleryElem);
             this.bindClickHandle(this.$galleryElem);
-
         }
 
         bindHoverHandle = ($elem: JQuery) => {
@@ -101,8 +100,36 @@
                     this.initElements();
                     this.initMenu();
                     this.initHandle();
+
+                    // 初期表示
+                    this.initDisplay(saisei.shell.requestText);
                 }
             );
+        }
+
+        private initDisplay = (requestText:string): void => {
+            var yyyymmdd: string;
+            var eventName: string;
+
+            if (requestText.length > "yyyymmdd,".length) {
+                var reqVals = requestText.split(",");
+                yyyymmdd = reqVals[0];
+                eventName = reqVals[1];
+                //alert("reqVals " + reqVals.toString());
+            } else {
+                var defaultVal = $("#selectmenu01 option:first").val();
+                var defaultText = $("#selectmenu01 option:first").text()
+                var values: string[] = saisei.utils.parseTuple(defaultVal);
+
+                yyyymmdd = values[0];
+                eventName = defaultText;
+            }
+            
+            var selectKey: string = saisei.utils.getKeyByEvent(yyyymmdd, eventName);
+            //alert("selectKey " + selectKey + " " + yyyymmdd + " " + eventName);
+            var imgList: string[] = saisei.model.requestImgData(selectKey);
+            //alert(imgList.toString());
+            $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
         }
 
         private reloadPage = (): void => {
@@ -115,7 +142,7 @@
 
             $("#accordion").accordion();
 
-            $("#dialog").dialog({
+            $("#gallery-dialog").dialog({
                 autoOpen: false,
                 width: 500,
                 buttons: [
@@ -138,7 +165,7 @@
                     // データのある時だけdialog表示
                     if (imgPath.indexOf(".jpg") !== -1) {
                         $(".saisei-gallery-dialog-img").attr('src', imgPath);
-                        $("#dialog").dialog("option", "title", title).dialog("open");
+                        $("#gallery-dialog").dialog("option", "title", title).dialog("open");
                         event.preventDefault();
                     }
 
@@ -195,8 +222,7 @@
                 var disEventText = eventList[i].yyyyNen + " " + eventList[i].eventName + " " + eventList[i].titleName;
                 eventRec = eventRec + opTag1a + eventVal + opTag1b + disEventText + opTag2;
             }
-            this.$galleryEvent.empty();
-            this.$galleryEvent.append(eventRec);
+            this.$galleryEvent.empty().append(eventRec);
         }
 
         private initCreatorVal = (): void => {
@@ -253,10 +279,12 @@
         private initButton01Handle = ($elem: JQuery): void => {
             $elem.bind("click",() => {
                 if (this.stateMap.isStartPage) {
-                    alert("not need action");
+                    alert("最初のページです");
                 } else if (this.stateMap.hasMulchPages) {
-                    alert("go to start page");
-                    this.stateMap.isStartPage = true;
+                    //alert("go to start page");
+                    this.stateMap.startIndex = 0;
+                    this.swichPageState(this.stateMap.startIndex);
+                    $(".saisei-gallery-image").trigger("changeImgSrc");
                 } else {
                     alert("not need action"); // dummy action
                 }
@@ -266,9 +294,13 @@
         private initButton02Handle = ($elem: JQuery): void => {
             $elem.bind("click", () => {
                 if (this.stateMap.isStartPage) {
-                    alert("not need action");
+                    alert("最初のページです");
                 } else if (this.stateMap.hasMulchPages) {
-                    alert("go back previous page");
+                    //alert("go back previous page");
+                    var nextStartIndex = Math.max(this.stateMap.startIndex - saisei.maxPhotoInPage, 0);
+                    this.stateMap.startIndex = nextStartIndex;
+                    this.swichPageState(this.stateMap.startIndex);
+                    $(".saisei-gallery-image").trigger("changeImgSrc");
                 } else {
                     alert("not need action"); // dummy action
                 }
@@ -278,9 +310,13 @@
         private initButton03Handle = ($elem: JQuery): void => {
             $elem.bind("click", () => {
                 if (this.stateMap.isEndPage) {
-                    alert("not need action");
+                    alert("最後のページです");
                 } else if (this.stateMap.hasMulchPages) {
-                    alert("go to next page");
+                    //alert("go to next page");
+                    var nextStartIndex = Math.min(this.stateMap.startIndex + saisei.maxPhotoInPage, this.stateMap.imgList.length - 1);
+                    this.stateMap.startIndex = nextStartIndex;
+                    this.swichPageState(this.stateMap.startIndex);
+                    $(".saisei-gallery-image").trigger("changeImgSrc");
                 } else {
                     alert("not need action"); // dummy action
                 }
@@ -290,14 +326,31 @@
         private initButton04Handle = ($elem: JQuery): void => {
             $elem.bind("click", () => {
                 if (this.stateMap.isEndPage) {
-                    alert("not need action");
+                    alert("最後のページです");
                 } else if (this.stateMap.hasMulchPages) {
-                    alert("go to end page");
-                    this.stateMap.isEndPage = true;
+                    //alert("go to end page");
+                    this.stateMap.startIndex = this.stateMap.imgList.length - saisei.maxPhotoInPage;
+                    this.swichPageState(this.stateMap.startIndex);
+                    $(".saisei-gallery-image").trigger("changeImgSrc");
                 } else {
                     alert("not need action"); // dummy action
                 }
             });
+        }
+
+        private swichPageState = (startIndex: number): void => {
+            var imgTotal = this.stateMap.imgList.length;
+            if (startIndex === 0) {
+                this.stateMap.isStartPage = true;
+                this.stateMap.isEndPage = false;
+            } else if ((imgTotal - startIndex - 1) < saisei.maxPhotoInPage) {
+                this.stateMap.isStartPage = false;
+                this.stateMap.isEndPage = true;
+            } else {
+                this.stateMap.isStartPage = false;
+                this.stateMap.isEndPage = false;
+            }
+            this.swichContinueGuideText(this.stateMap.hasMulchPages);
         }
 
         private initChange01Handle = ($elem: JQuery): void => {
@@ -305,11 +358,8 @@
                 change: function (event, ui) {
                     var values: string[] = saisei.utils.parseTuple(ui.item.value);
                     var selectKey: string = saisei.utils.getKeyByEvent(values[0], ui.item.label);
-                    //alert("selectKey " + selectKey + " label " + ui.item.label + " value " + ui.item.value);
                     var imgList: string[] = saisei.model.requestImgData(selectKey);
-                    //alert(imgList.toString());
                     $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
-                    //$("#img01").trigger("changeImgList",imgList);
                 }
             });
 
@@ -319,7 +369,6 @@
             $elem.selectmenu({
                 change: function (event, ui) {
                     var imgList: string[] = saisei.model.requestImgData(ui.item.value);
-                    //alert(imgList.toString());
                     $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
                 }
             });
@@ -328,8 +377,6 @@
         private initChange03Handle = ($elem: JQuery): void => {
             $elem.selectmenu({
                 change: function (event, ui) {
-                    //alert("change");
-                    //alert("label " + ui.item.label + " value " + ui.item.value);
                     var imgList: string[] = new Array<string>();
                     var values: string[] = saisei.utils.parseTuple(ui.item.value);
                     for (var i = 0; (2 * i) < values.length; i++) {
@@ -339,7 +386,6 @@
                             imgList.push(tempList[j]);
                         }                                               
                     }
-                    //alert(imgList.toString());
                     $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
                 }
             });
@@ -353,18 +399,10 @@
 
         private initChangeImgListHandle = (): void => {
             this.$gallerySearch.bind("changeImgList", (event: JQueryEventObject, imgList: string) => {
+
                 this.initStateMap(imgList);
-
-                var disText = "";
-                if (this.stateMap.hasMulchPages) {
-                    disText = "続きがあります";
-                } else {
-                    disText = "続きはありません";
-                }
-                $(".saisei-gallery-blockdummy").text(disText);
-
-                // Trigger imgSrc
                 $(".saisei-gallery-image").trigger("changeImgSrc");
+
             });
         }
 
@@ -416,7 +454,17 @@
             } else {
                 this.stateMap.hasMulchPages = false;
             }
-            //alert("list.length " + list.length + "this.stateMap.hasMulchPages " + this.stateMap.hasMulchPages);
+            this.swichContinueGuideText(this.stateMap.hasMulchPages);
+        }
+
+        private swichContinueGuideText = (hasMulchPages: boolean): void => {
+            var disText = "";
+            if (hasMulchPages && !this.stateMap.isEndPage) {
+                disText = "続きがあります";
+            } else if (!hasMulchPages || this.stateMap.isEndPage) {
+                disText = "続きはありません";
+            }
+            $(".saisei-gallery-blockdummy").text(disText);
         }
     }
 
