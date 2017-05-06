@@ -19,7 +19,7 @@
         requestText: string = "";
 
         initModule = ($mainId: JQuery) => {
-            //alert(this.htmlStructure);
+
             $mainId.html(this.htmlStructure);
             this.$container = $mainId;
 

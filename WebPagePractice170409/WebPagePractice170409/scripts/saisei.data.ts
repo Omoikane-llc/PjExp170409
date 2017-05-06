@@ -3,7 +3,6 @@
     // Dataに直接アクセスするのはModelのみ
     class ImgData implements SaiseiData {
 
-        //private prefixPath: string = saisei.prefixPath;
         private imgPathList: string[];
 
         constructor() {
@@ -35,7 +34,7 @@
             var result:string[] = new Array<string>();
             for (var i = 0; i < this.imgPathList.length; i++) {
                 var fileName = this.imgPathList[i];
-                //alert(fileName + " " + key);
+
                 if (fileName.length > 0 && fileName.indexOf(key) !== -1) {
                     result.push(fileName);
                 }
@@ -117,7 +116,7 @@
     class ImgRuleData implements SaiseiData {
         private ruleList: SaiseiPhotoName[] = saisei.rulePhotoName;
         select = (imgName: string, prop = "creator") => {
-            var result: string[] = new Array<string>();
+            var result: SaiseiPhotoName[] = new Array<SaiseiPhotoName>();
             for (var i = 0; i < this.ruleList.length; i++) {
                 var hint = "";
 
@@ -130,7 +129,7 @@
                 }
 
                 if (imgName.length > 0 && imgName.indexOf(this.ruleList[i].shortName) !== -1) {
-                    result.push(hint);
+                    result.push(this.ruleList[i]);
                 }
             }
             return result;

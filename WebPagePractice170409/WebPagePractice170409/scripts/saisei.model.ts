@@ -12,10 +12,25 @@
 
             var tempName = imgName.substring(imgName.indexOf("_"));
             //alert(tempName);
-            var nameList: string[] = saisei.imgRuleData.select(tempName);
+            var nameList: SaiseiPhotoName[] = saisei.imgRuleData.select(tempName);
 
-            // todo extract longest match item
-            result = nameList[0];
+            // 複数候補がある場合 request:_xxxx.jpg に対してanswer1:_xxxx > answer2:_xxxxyyyとする
+            if (nameList.length > 1) {
+                nameList.sort((n1: SaiseiPhotoName, n2: SaiseiPhotoName) => {
+                    var comp = 0;
+                    var stdLength = tempName.replace(".jpg", "").length;
+                    var diff1 = Math.abs(stdLength - n1.shortName.length);
+                    var diff2 = Math.abs(stdLength - n2.shortName.length);
+
+                    if (diff1 > diff2) {
+                        comp = 1;
+                    } else if (diff1 < diff2) {
+                        comp = -1;
+                    }
+                    return comp;
+                });
+            }
+            result = nameList[0].creatorHint;
 
             return result;
         }

@@ -151,8 +151,9 @@
                 var yyyymmdd = ddId.substring(2, "i-yyyymmdd".length);
                 var eventName = ddText.substring(0, ddText.indexOf("("));
                 var values = yyyymmdd + "," + eventName;
+                //JQueryのイベントデータでも可能だが，別の方法で試行
                 saisei.shell.requestText = values;
-                //alert("dd click " + values);
+                
                 $(".saisei-main-gallery").trigger("click");
             });
         }
@@ -179,7 +180,7 @@
                     var endIndex = tempPath.indexOf(".jpg") + 4;
                     imgPath = tempPath.substring(startIndex, endIndex);
                 }
-                //alert(title + " " + imgPath);
+
                 if (imgPath.indexOf(".jpg") !== -1) {
                     $(".saisei-home-img").attr('src', imgPath);
                     $("#home-dialog").dialog("option", "title", title).dialog("open");

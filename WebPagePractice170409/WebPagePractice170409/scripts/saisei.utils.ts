@@ -2,9 +2,9 @@
     class Utils {
         // {xxx,yyy} => [xxx,yyy]
         parseTuple = (record: string) => {
-            var temp = record.trim().split("{").join("").split("}").join(",");
+            var temp = record.trim().split("{").join("").split("}").join(","); // replaceは先頭要素にのみ作用
             var result: string[] = temp.split(",");
-            //alert(result.toString());
+
             return result;
         }
 
@@ -34,6 +34,20 @@
             var startIndex = styleText.indexOf("url(") + "url(".length;
             var endIndex = styleText.indexOf(")");
             result = styleText.substring(startIndex, endIndex);
+            return result;
+        }
+
+        // 雑な実装だが，[0]に"undefined"と入っているものを振るい落とす
+        validateImgList = (list: string[]) => {
+            var result = false;
+            if (list.length > 1) {
+                result = true;
+            } else {
+                var head = list[0];
+                if (head.indexOf("jpg") !== -1) {
+                    result = true;
+                }
+            }
             return result;
         }
     }

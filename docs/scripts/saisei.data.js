@@ -9,7 +9,6 @@ var saisei;
                 var result = new Array();
                 for (var i = 0; i < _this.imgPathList.length; i++) {
                     var fileName = _this.imgPathList[i];
-                    //alert(fileName + " " + key);
                     if (fileName.length > 0 && fileName.indexOf(key) !== -1) {
                         result.push(fileName);
                     }
@@ -130,7 +129,7 @@ var saisei;
                         hint = _this.ruleList[i].creatorHint;
                     }
                     if (imgName.length > 0 && imgName.indexOf(_this.ruleList[i].shortName) !== -1) {
-                        result.push(hint);
+                        result.push(_this.ruleList[i]);
                     }
                 }
                 return result;

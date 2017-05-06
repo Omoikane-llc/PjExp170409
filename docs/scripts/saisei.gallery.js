@@ -105,9 +105,7 @@ var saisei;
                     eventName = defaultText;
                 }
                 var selectKey = saisei.utils.getKeyByEvent(yyyymmdd, eventName);
-                //alert("selectKey " + selectKey + " " + yyyymmdd + " " + eventName);
                 var imgList = saisei.model.requestImgData(selectKey);
-                //alert(imgList.toString());
                 $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
             };
             this.reloadPage = function () {
@@ -239,7 +237,6 @@ var saisei;
                         alert("最初のページです");
                     }
                     else if (_this.stateMap.hasMulchPages) {
-                        //alert("go to start page");
                         _this.stateMap.startIndex = 0;
                         _this.swichPageState(_this.stateMap.startIndex);
                         $(".saisei-gallery-image").trigger("changeImgSrc");
@@ -255,7 +252,6 @@ var saisei;
                         alert("最初のページです");
                     }
                     else if (_this.stateMap.hasMulchPages) {
-                        //alert("go back previous page");
                         var nextStartIndex = Math.max(_this.stateMap.startIndex - saisei.maxPhotoInPage, 0);
                         _this.stateMap.startIndex = nextStartIndex;
                         _this.swichPageState(_this.stateMap.startIndex);
@@ -272,7 +268,6 @@ var saisei;
                         alert("最後のページです");
                     }
                     else if (_this.stateMap.hasMulchPages) {
-                        //alert("go to next page");
                         var nextStartIndex = Math.min(_this.stateMap.startIndex + saisei.maxPhotoInPage, _this.stateMap.imgList.length - 1);
                         _this.stateMap.startIndex = nextStartIndex;
                         _this.swichPageState(_this.stateMap.startIndex);
@@ -289,7 +284,6 @@ var saisei;
                         alert("最後のページです");
                     }
                     else if (_this.stateMap.hasMulchPages) {
-                        //alert("go to end page");
                         _this.stateMap.startIndex = _this.stateMap.imgList.length - saisei.maxPhotoInPage;
                         _this.swichPageState(_this.stateMap.startIndex);
                         $(".saisei-gallery-image").trigger("changeImgSrc");
@@ -301,7 +295,11 @@ var saisei;
             };
             this.swichPageState = function (startIndex) {
                 var imgTotal = _this.stateMap.imgList.length;
-                if (startIndex === 0) {
+                if (imgTotal === 0) {
+                    _this.stateMap.isStartPage = true;
+                    _this.stateMap.isEndPage = true;
+                }
+                else if (startIndex === 0) {
                     _this.stateMap.isStartPage = true;
                     _this.stateMap.isEndPage = false;
                 }
@@ -373,7 +371,6 @@ var saisei;
                     var btnTag1b = ')"></button>';
                     var imgIndex = _this.stateMap.startIndex + index;
                     var imgPath = saisei.prefixPath + _this.stateMap.imgList[imgIndex];
-                    //todo対症療法的なので後で修正
                     var titleText = "";
                     if (_this.stateMap.imgList.length > imgIndex && _this.stateMap.imgList[imgIndex].length > 0) {
                         titleText = saisei.model.requestCreatorName(_this.stateMap.imgList[imgIndex]) + " 作品";
@@ -390,21 +387,24 @@ var saisei;
                     var title = $(_this.imgBlockIds[index]).text();
                     var srcStr = $(_this.imgBlockIds[index]).find('button').attr('style');
                     $(_this.imgBlockIds[index]).trigger('openDialog', title + "," + srcStr);
-                    //alert("$(this.imgBlockIds[index]).trigger('openDialog');");
                 });
             };
             this.initStateMap = function (imgList) {
                 var list = imgList.split(",");
+                if (saisei.utils.validateImgList(list)) {
+                    _this.stateMap.imgList = list;
+                }
+                else {
+                    _this.stateMap.imgList = new Array();
+                }
                 _this.stateMap.startIndex = 0;
-                _this.stateMap.imgList = list;
-                _this.stateMap.isStartPage = true;
-                _this.stateMap.isEndPage = false;
                 if (list.length > saisei.maxPhotoInPage) {
                     _this.stateMap.hasMulchPages = true;
                 }
                 else {
                     _this.stateMap.hasMulchPages = false;
                 }
+                _this.swichPageState(_this.stateMap.startIndex);
                 _this.swichContinueGuideText(_this.stateMap.hasMulchPages);
             };
             this.swichContinueGuideText = function (hasMulchPages) {

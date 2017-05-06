@@ -18,7 +18,6 @@ var saisei;
                 + '<div class="saisei-foot"><h6>Copyright© SAISEI SITE All Rights Reserved.</h6></div>';
             this.requestText = "";
             this.initModule = function ($mainId) {
-                //alert(this.htmlStructure);
                 $mainId.html(_this.htmlStructure);
                 _this.$container = $mainId;
                 saisei.home.initModule(_this.getContainer());

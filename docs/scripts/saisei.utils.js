@@ -4,9 +4,8 @@ var saisei;
         function Utils() {
             // {xxx,yyy} => [xxx,yyy]
             this.parseTuple = function (record) {
-                var temp = record.trim().split("{").join("").split("}").join(",");
+                var temp = record.trim().split("{").join("").split("}").join(","); // replaceは先頭要素にのみ作用
                 var result = temp.split(",");
-                //alert(result.toString());
                 return result;
             };
             // EventNameからimgファイル検索のためのキーを取得
@@ -33,6 +32,20 @@ var saisei;
                 var startIndex = styleText.indexOf("url(") + "url(".length;
                 var endIndex = styleText.indexOf(")");
                 result = styleText.substring(startIndex, endIndex);
+                return result;
+            };
+            // 雑な実装だが，[0]に"undefined"と入っているものを振るい落とす
+            this.validateImgList = function (list) {
+                var result = false;
+                if (list.length > 1) {
+                    result = true;
+                }
+                else {
+                    var head = list[0];
+                    if (head.indexOf("jpg") !== -1) {
+                        result = true;
+                    }
+                }
                 return result;
             };
         }
