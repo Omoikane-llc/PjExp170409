@@ -416,6 +416,7 @@
         private changeImgSrcImp = (index: number) => {
             $(this.imgBlockIds[index]).bind("changeImgSrc", () => {
                 var divTag1a = '<div class="saisei-gallery-upperimg-text">';
+                var divTag1aa = '<div class="saisei-gallery-lowerimg-text">';
                 var divTag1b = '</div>';
                 var btnTag1a = '<button class="saisei-gallery-image" style="background-image:url(';
                 var btnTag1b = ')"></button>';
@@ -431,7 +432,7 @@
                 if (index < 3) {
                     blockHtml = divTag1a + titleText + divTag1b + btnTag1a + imgPath + btnTag1b;
                 } else {
-                    blockHtml = btnTag1a + imgPath + btnTag1b + divTag1a + titleText + divTag1b;
+                    blockHtml = btnTag1a + imgPath + btnTag1b + divTag1aa + titleText + divTag1b;
                 }
 
                 $(this.imgBlockIds[index]).empty().append(blockHtml);
