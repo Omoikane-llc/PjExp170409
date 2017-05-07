@@ -1037,6 +1037,7 @@
         "201501civic_gassaku3.jpg",
         "201501civic_gassaku4.jpg",
         "201501civic_gassaku5.jpg",
+        "201501civic_gassaku6.jpg",
         "201501rakugo_gassaku1.jpg",
         "201510ikegei_hagiya1.jpg",
         "201510kenten_gassaku1.jpg",
@@ -1050,6 +1051,7 @@
         "201510sogetsuten_omori1.jpg",
         "201510sogetsuten_omori2.jpg",
         "201510sogetsuten_tomita1.jpg",
+        "201510sogetsuten_tomita2.jpg",
         "201511hitachi_hagiya1.jpg",
         "201511hitachi_kikuchi1.jpg",
         "201511hitachi_namekawa1.jpg",
@@ -1089,6 +1091,7 @@
         "201611hitachi_namekawa1.jpg",
         "201611hitachi_omori1.jpg",
         "201611hitachi_suzuki1.jpg",
+        "201701civic_gassaku1.jpg",
         "201702shibuten_gassaku1.jpg",
         "201702shibuten_gassaku2.jpg",
         "201702shibuten_gassaku3.jpg",
@@ -1100,6 +1103,7 @@
         "201702shibuten_takamaru1.jpg",
         "201702shibuten_tomita1.jpg",
         "201702shibuten_tomita2.jpg"
+
     ];
 
     export var rulePhotoName: SaiseiPhotoName[] = [
