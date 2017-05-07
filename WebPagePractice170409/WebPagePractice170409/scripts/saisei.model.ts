@@ -129,7 +129,7 @@
                 if (eHint.length > 0 && (eName.indexOf(eHint) !== -1 || eHint.indexOf(eName) !== -1)) {
                     temp.push(allHints[i]);
                 }
-                console.log(eName.indexOf(eHint) + " " + eHint.indexOf(eName) + " eventHint " + allHints[i].eventHint + "eventName" + eName);
+                //console.log(eName.indexOf(eHint) + " " + eHint.indexOf(eName) + " eventHint " + allHints[i].eventHint + "eventName" + eName);
             }
 
             // 該当なしは""，複数候補の場合は入力のeventNameに長さが近いものを返す
@@ -152,7 +152,7 @@
                 for (var i = 0; i < temp.length; i++) {
                     check = check + temp[i].eventHint + " ";
                 }
-                console.log("sorted " + check);
+                //console.log("sorted " + check);
             }
             return result;
         }
