@@ -295,7 +295,7 @@ var saisei;
             };
             this.swichPageState = function (startIndex) {
                 var imgTotal = _this.stateMap.imgList.length;
-                if (imgTotal === 0) {
+                if (imgTotal === 0 || imgTotal === saisei.maxPhotoInPage) {
                     _this.stateMap.isStartPage = true;
                     _this.stateMap.isEndPage = true;
                 }

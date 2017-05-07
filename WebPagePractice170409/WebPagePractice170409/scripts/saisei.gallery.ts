@@ -336,7 +336,7 @@
 
             var imgTotal = this.stateMap.imgList.length;
 
-            if (imgTotal === 0) {
+            if (imgTotal === 0 || imgTotal === saisei.maxPhotoInPage) {
                 this.stateMap.isStartPage = true;
                 this.stateMap.isEndPage = true;
             } else if (startIndex === 0) {
