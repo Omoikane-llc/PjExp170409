@@ -121,7 +121,7 @@
                 var defaultText = $("#selectmenu01 option:first").text()
                 var values: string[] = saisei.utils.parseTuple(defaultVal);
                 yyyymmdd = values[0];
-                eventName = defaultText;
+                eventName = defaultText.substring("yyyy年 ".length);
             }
             
             var selectKey: string = saisei.utils.getKeyByEvent(yyyymmdd, eventName);
@@ -357,7 +357,8 @@
             $elem.selectmenu({
                 change: function (event, ui) {
                     var values: string[] = saisei.utils.parseTuple(ui.item.value);
-                    var selectKey: string = saisei.utils.getKeyByEvent(values[0], ui.item.label);
+                    var eventName = ui.item.label.substring("yyyy年 ".length);
+                    var selectKey: string = saisei.utils.getKeyByEvent(values[0], eventName);
                     var imgList: string[] = saisei.model.requestImgData(selectKey);
                     $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
                 }
@@ -443,11 +444,7 @@
 
         private initStateMap = (imgList: string): void => {
             var list: string[] = imgList.split(",");
-            if (saisei.utils.validateImgList(list)) {
-                this.stateMap.imgList = list;
-            } else {
-                this.stateMap.imgList = new Array<string>();
-            }
+            this.stateMap.imgList = saisei.utils.validateImgList(list);
 
             this.stateMap.startIndex = 0;   
                      

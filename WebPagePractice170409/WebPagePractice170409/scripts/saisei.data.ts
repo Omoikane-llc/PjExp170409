@@ -39,6 +39,7 @@
                     result.push(fileName);
                 }
             }
+            //console.log("key " + key + " " + result);
             return result;
         };
         push = (fileName: string) => {

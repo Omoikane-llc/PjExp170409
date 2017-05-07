@@ -65,8 +65,10 @@
             // selectAllの先頭要素はダミー
             var tempNews: SaiseiNews[] = saisei.newsData.selectAll();
             var allNews: SaiseiNews[] = tempNews.slice(1, tempNews.length);
-            this.sortLocation(allNews);
 
+            // 全てのイベント情報をlocationで分類
+            this.sortLocation(allNews);
+            
             for (var i = 0; i < allNews.length; i++) { 
                 var tempLocation = allNews[i].location;
 
@@ -82,6 +84,7 @@
             return resultList;
         }
 
+        // 場所名の長さ順，同じときは全イベント情報での出現順で一意にする
         private sortLocation = (list: SaiseiNews[]): void => {
             var compStr = "";
             for (var i = 0; i < list.length; i++) {
@@ -118,29 +121,39 @@
         requestEventHints = (eventName: string) => {
             var result = "";
             var temp: saisei.SaiseiPhotoName[] = new Array<SaiseiPhotoName>();
+            var eName = eventName.split(" ").join(""); // 比較のために空白は削除
 
             var allHints: saisei.SaiseiPhotoName[] = saisei.imgRuleData.selectAll();
             for (var i = 0; i < allHints.length; i++) {
-                if (allHints[i].eventHint.length > 0 && eventName.indexOf(allHints[i].eventHint) !== -1) {
+                var eHint = allHints[i].eventHint.split(" ").join("");; // 比較のために空白は削除
+                if (eHint.length > 0 && (eName.indexOf(eHint) !== -1 || eHint.indexOf(eName) !== -1)) {
                     temp.push(allHints[i]);
                 }
+                console.log(eName.indexOf(eHint) + " " + eHint.indexOf(eName) + " eventHint " + allHints[i].eventHint + "eventName" + eName);
             }
 
-            // 該当なしは""，複数候補の場合は最も長いものを返す
+            // 該当なしは""，複数候補の場合は入力のeventNameに長さが近いものを返す
             if (temp.length !== 0) {
                 temp.sort((n1: SaiseiPhotoName, n2: SaiseiPhotoName) => {
                     var comp = 0;
-                    if (n1.eventHint.length > n2.eventHint.length) {
-                        comp = -1;
-                    } else if (n1.eventHint.length < n2.eventHint.length) {
-                        comp = 1;
-                    }
+                    var stdLength = eName.length;
+                    var diff1 = Math.abs(stdLength - n1.eventHint.length);
+                    var diff2 = Math.abs(stdLength - n2.eventHint.length);
 
+                    if (diff1 > diff2) {
+                        comp = 1;
+                    } else if (diff1 < diff2) {
+                        comp = -1;
+                    }
                     return comp;
                 });
                 result = temp[0].shortName;
+                var check="";
+                for (var i = 0; i < temp.length; i++) {
+                    check = check + temp[i].eventHint + " ";
+                }
+                console.log("sorted " + check);
             }
-
             return result;
         }
 
@@ -150,19 +163,23 @@
 
             var allHints: saisei.SaiseiPhotoName[] = saisei.imgRuleData.selectAll();
             for (var i = 0; i < allHints.length; i++) {
-                if (allHints[i].locationHint.length > 0 && locationName.indexOf(allHints[i].locationHint) !== -1) {
+                if (allHints[i].locationHint.length > 0 && (locationName.indexOf(allHints[i].locationHint) !== -1) || allHints[i].locationHint.indexOf(locationName) !== -1) {
                     temp.push(allHints[i]);
                 }
             }
 
-            // 該当なしは""，複数候補の場合は最も長いものを返す
+            // 該当なしは""，複数候補の場合は入力のlocationNameに長さが近いものを返す
             if (temp.length !== 0) {
                 temp.sort((n1: SaiseiPhotoName, n2: SaiseiPhotoName) => {
                     var comp = 0;
-                    if (n1.locationHint.length > n2.locationHint.length) {
-                        comp = -1;
-                    } else if (n1.locationHint.length < n2.locationHint.length) {
+                    var stdLength = locationName.length;
+                    var diff1 = Math.abs(stdLength - n1.locationHint.length);
+                    var diff2 = Math.abs(stdLength - n2.locationHint.length);
+
+                    if (diff1 > diff2) {
                         comp = 1;
+                    } else if (diff1 < diff2) {
+                        comp = -1;
                     }
 
                     return comp;

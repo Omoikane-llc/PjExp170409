@@ -37,15 +37,13 @@
             return result;
         }
 
-        // 雑な実装だが，[0]に"undefined"と入っているものを振るい落とす
+        // 雑な実装だが，"undefined"と入っているものを振るい落とす
         validateImgList = (list: string[]) => {
-            var result = false;
-            if (list.length > 1) {
-                result = true;
-            } else {
-                var head = list[0];
-                if (head.indexOf("jpg") !== -1) {
-                    result = true;
+            var result = new Array<string>();
+
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].indexOf("jpg") !== -1) {
+                    result.push(list[i]);
                 }
             }
             return result;
