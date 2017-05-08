@@ -421,7 +421,7 @@
                 var btnTag1a = '<button class="saisei-gallery-image" style="background-image:url(';
                 var btnTag1b = ')"></button>';
                 var imgIndex = this.stateMap.startIndex + index;
-                var imgPath = saisei.prefixPath + this.stateMap.imgList[imgIndex];
+                var imgPath = (saisei.prefixPath + this.stateMap.imgList[imgIndex]).trim; // IEでファイル名末尾空白のGETが投げられる場合がある対応
 
                 var titleText = "";
                 if (this.stateMap.imgList.length > imgIndex && this.stateMap.imgList[imgIndex].length > 0) {
