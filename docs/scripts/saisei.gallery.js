@@ -372,7 +372,7 @@ var saisei;
                     var btnTag1a = '<button class="saisei-gallery-image" style="background-image:url(';
                     var btnTag1b = ')"></button>';
                     var imgIndex = _this.stateMap.startIndex + index;
-                    var imgPath = (saisei.prefixPath + _this.stateMap.imgList[imgIndex]).trim; // IEでファイル名末尾空白のGETが投げられる場合がある対応
+                    var imgPath = (saisei.prefixPath + _this.stateMap.imgList[imgIndex]).trim; // IEでファイル名末尾"(%22)でGETが投げられる場合がある
                     var titleText = "";
                     if (_this.stateMap.imgList.length > imgIndex && _this.stateMap.imgList[imgIndex].length > 0) {
                         titleText = saisei.model.requestCreatorName(_this.stateMap.imgList[imgIndex]) + " 作品";

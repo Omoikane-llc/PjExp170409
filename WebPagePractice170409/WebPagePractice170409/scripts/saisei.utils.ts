@@ -33,7 +33,7 @@
             var result: string = "";
             var startIndex = styleText.indexOf("url(") + "url(".length;
             var endIndex = styleText.indexOf(")");
-            result = styleText.substring(startIndex, endIndex);
+            result = styleText.substring(startIndex, endIndex).split("'").join("").split('"').join("");// IEでファイル名末尾"(%22)でGETが投げられる場合がある
             return result;
         }
 
