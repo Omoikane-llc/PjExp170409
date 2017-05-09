@@ -162,7 +162,7 @@
 
                     // データのある時だけdialog表示
                     if (imgPath.indexOf(".jpg") !== -1) {
-                        $(".saisei-gallery-dialog-img").attr('src', imgPath);
+                        $(".saisei-gallery-dialog-img").attr('src', imgPath.replace('"', "").replace('"', ""));//IEが自動で""を補完してしまうため除去
                         $("#gallery-dialog").dialog("option", "title", title).dialog("open");
                         event.preventDefault();
                     }
@@ -421,7 +421,7 @@
                 var btnTag1a = '<button class="saisei-gallery-image" style="background-image:url(';
                 var btnTag1b = ')"></button>';
                 var imgIndex = this.stateMap.startIndex + index;
-                var imgPath = (saisei.prefixPath + this.stateMap.imgList[imgIndex]).trim; // IEでファイル名末尾"(%22)でGETが投げられる場合がある
+                var imgPath = saisei.prefixPath + this.stateMap.imgList[imgIndex]; // IEでsaisei.prefixPathが解決できない対応
 
                 var titleText = "";
                 if (this.stateMap.imgList.length > imgIndex && this.stateMap.imgList[imgIndex].length > 0) {
