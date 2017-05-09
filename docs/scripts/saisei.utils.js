@@ -31,7 +31,7 @@ var saisei;
                 var result = "";
                 var startIndex = styleText.indexOf("url(") + "url(".length;
                 var endIndex = styleText.indexOf(")");
-                result = styleText.substring(startIndex, endIndex).split("'").join("").split('"').join(""); // IEでファイル名末尾"(%22)でGETが投げられる場合がある
+                result = styleText.substring(startIndex, endIndex); // IEでファイル名末尾"(%22)でGETが投げられる場合がある
                 return result;
             };
             // 雑な実装だが，"undefined"と入っているものを振るい落とす
