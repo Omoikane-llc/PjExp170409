@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+
+    <!-- スタイルシート -->
+    <link rel="stylesheet" href="./css/jquery-ui.css" type="text/css" />
+    <link rel="stylesheet" href="css/app.css" type="text/css" />
+
+    <!-- ライブラリ -->
+    <script src="./scripts/typings/jquery/jquery-3.1.1.js"></script>
+    <script src="./scripts/typings/jqueryui/jquery-ui.js"></script>
+    <script src="./scripts/app.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            dataViewer.shell.initModule();
+        });
+    </script>
+
+</head>
+<body>
+    <div id="dataViewer">
+        <div id="dataViewer-img"><img id="dataView-photo" alt="dataViewer" /></div>
+        <div id="dataViewer-select"><input type="file" id="dataView-select-dir" /></div>
+        <div id="dataViewer-textView">コピペ用テキスト<br /><textarea id="dataView-textArea"></textarea></div>
+        <div id="dataViewer-input">
+            <span>イベント名<input type="text" id="dataView-input-text01" class="dataView-input-text" value="第xx回草月いけばな展" />
+                開催年<input type="text" id="dataView-input-text02a" class="dataView-input-text" value="2017" size="4"/>
+                開始月日<input type="text" id="dataView-input-text02b" class="dataView-input-text" value="0501" size="4" />
+                終了月日<input type="text" id="dataView-input-text02c" class="dataView-input-text" value="0510" size="4" />
+            </span><br />
+            <span>
+                開催場所<input type="text" id="dataView-input-text03" class="dataView-input-text" />
+                <select id="dataView-input-select01">
+                    <option>場所を選択</option>
+                    <option value="ibaraki 水戸京成百貨店">水戸京成百貨店</option>
+                    <option value="hitachi 日立市民会館">日立市民会館</option>
+                    <option value="sogetsu 日本橋高島屋8階ホール">日本橋高島屋8階ホール</option>
+                    <option value="ibaraki 県民文化センター">県民文化センター</option>
+                    <option value="hitachi 日立市教育プラザ2階ギャラリー">日立市教育プラザ2階ギャラリー</option>
+                    <option value="sogetsu 宇都宮東武宇都宮百貨店5階イベントプラザ">宇都宮  東武宇都宮百貨店  5階イベントプラザ</option>
+                    <option value="geijyutsukan 水戸芸術館現代美術ギャラリー">水戸芸術館　現代美術ギャラリー</option>
+                    <option value="hitachi 日立市教育プラザ">日立市教育プラザ</option>
+                    <option value="sogetsu 東京草月会館1Ｆプラザ">東京　草月会館1Ｆ　プラザ</option>
+                    <option value="ibaraki 茨城県県民文化センター">茨城県県民文化センター</option>
+                    <option value="shiyakusyo 日立市役所内">日立市役所内</option>
+                    <option value="kashiwa 柏高島屋">柏高島屋</option>
+                    <option value="civic 日立シビックセンター">日立シビックセンター</option>
+                    <option value="kyodo 日立市郷土博物館">日立市郷土博物館</option>
+                </select>
+                イベントタイトル<input type="text" id="dataView-input-text04" class="dataView-input-text" value="「花は、私になる。」" />
+            </span><br />
+            <span>製作者<input type="text" id="dataView-input-text05" class="dataView-input-text" />
+                    <select id="dataView-input-select02">
+                        <option>名前を選択</option>
+                        <option value="_hagiya">萩谷灑清</option>
+                        <option value="_tomita">富田灑智</option>
+                        <option value="_namekawa">滑川灑泰</option>
+                        <option value="_kikuchi">菊池灑幸</option>
+                        <option value="_takamaru">高丸清光</option>
+                        <option value="_shida">志田清珠</option>
+                        <option value="_omori">大森灑泉</option>
+                        <option value="_suzuki">鈴木灑恵</option>
+                        <option value="_kawai">河合灑楓</option>
+                        <option value="_horikoshi">堀越灑観</option>
+                        <option value="_kouji">孝治蓮唱</option>
+                        <option value="_gassaku">合作</option>
+                        <option value="_other">その他</option>
+                        <option value="_kitami">北見陽子</option>
+                        <option value="_iwasaki">岩﨑灑加</option>
+                        <option value="_yabuki">矢吹</option>
+                        <option value="_nohara">野原</option>
+                        <option value="_ogasawara">小笠原</option>
+                        <option value="_tiba">千葉</option>
+                        <option value="_gotou">後藤</option>
+                        <option value="_nishizawa">西沢</option>
+                        <option value="_katue">鈴木(克江) </option>
+                        <option value="_sekine">関根</option>
+                        <option value="_kayane">茅根</option>
+                        <option value="_kasuya">粕谷</option>
+                        <option value="_usami">宇佐美</option>
+                        <option value="_doumeki">百目鬼</option>
+                        <option value="_miki">菊池(美紀) </option>
+                        <option value="_ikeda">池田</option>
+                        <option value="_endou">遠藤</option>
+                        <option value="_senba">仙波</option>
+                        <option value="_inoue">井上</option>
+                        <option value="_yamamoto">山本</option>
+                        <option value="_kawarazaki">河原崎</option>
+                    </select>
+                花材<input type="text" id="dataView-input-text06" class="dataView-input-text" value="キウイのつる, アカヅル（黒着色）" size="20"/>
+            </span>
+        </div>
+    </div>
+
+</body>
+</html>

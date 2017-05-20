@@ -57,3 +57,65 @@ span {
     height:auto;
     width:auto;
 }
+
+#dataViewer{
+    position:relative;
+    height:1024px;
+    width:1000px;
+    background:#72b42d;
+    margin:auto;
+    border-radius: 20px;
+}
+
+#dataViewer-img{
+    top:0;
+    left:0;
+    right:0;
+    height:50%;
+    width:1000px;
+}
+
+#dataViewer-select{
+    top:0;
+    left:0;
+    right:0;
+    height:10%;
+    width:1000px;
+}
+
+#dataViewer-textView{
+    top:0;
+    left:0;
+    right:0;
+    height:20%;
+    width:1000px;
+}
+
+#dataViewer-input{
+    top:0;
+    left:0;
+    right:0;
+    height:20%;
+    width:1000px;
+}
+
+#dataView-photo{
+    
+}
+
+#dataView-select-dir{
+    width:300px;
+}
+
+#dataView-textArea{
+    height:10em;
+    width:990px;
+}
+
+.dataView-input-text{
+
+}
+
+#dataView-input-text06{
+    width:30em;
+}
