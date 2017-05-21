@@ -139,7 +139,7 @@ var saisei;
                     var title = tempText[0];
                     var imgPath = saisei.utils.getPathFromStyleUri(tempText[1]);
                     var imgInfo = saisei.utils.getImgInfoFromImgSrc(tempText[1], _this.stateMap);
-                    alert(imgInfo);
+                    //alert(imgInfo);
                     // データのある時だけdialog表示
                     if (imgPath.indexOf(".jpg") !== -1) {
                         $(".saisei-gallery-dialog-img").attr('src', imgPath.replace('"', "").replace('"', "")); //IEが自動で""を補完してしまうため除去
