@@ -53,14 +53,14 @@
         
         private initImgList = () => {
             // topPagePhotoの取得，割り付け
-            var photoList: string[] = saisei.model.requestImgData(saisei.topPagePhoto);
-            var imgPath = saisei.prefixPath + photoList[0];
+            var photoList: string[][] = saisei.model.requestImgData(saisei.topPagePhoto);
+            var imgPath = saisei.prefixPath + photoList[0][0];
             var imgUrl = 'url("' + imgPath + '")'
 
             this.$home_img.css('background-image', imgUrl);
             this.$home_dialog_img.attr('src', imgPath);
 
-            var titleText = saisei.model.requestCreatorName(photoList[0]) + " 作品";
+            var titleText = saisei.model.requestCreatorName(photoList[0][0]) + " 作品";
             this.$saisei_home_img_text.text(titleText);
 
             this.bindDialogHandle();

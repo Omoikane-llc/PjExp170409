@@ -38,6 +38,13 @@
         hasMulchPages: boolean;
         isEndPage: boolean;
         imgList: string[];
+        imgInfoList: string[];
         startIndex: number;
     }
+
+    export interface SaiseiImage {
+        imgpath: string;
+        imginfo: string;
+    }
+
 }

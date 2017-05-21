@@ -2,8 +2,9 @@
     class Model {
         // ModelはDataへのfacadeとする
         // 機能モジュールからのリクエストに対して必要な型のレスポンスを返す．
+        // dataの内部構造に依存した型情報が漏れると疎結合が壊れるので注意
         requestImgData = (key: string) => {
-            var list: string[] = saisei.imgData.select(key);
+            var list: string[][] = saisei.imgData.select(key);
             return list;
         }
 

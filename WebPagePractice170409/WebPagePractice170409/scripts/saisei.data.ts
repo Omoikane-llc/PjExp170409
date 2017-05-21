@@ -3,16 +3,16 @@
     // Dataに直接アクセスするのはModelのみ
     class ImgData implements SaiseiData {
 
-        private imgPathList: string[];
+        private imgPathList: SaiseiImage[];
 
         constructor() {
             var temp = saisei.imgPathList;
-            temp.sort((str1: string, str2: string) => {
+            temp.sort((record1: SaiseiImage, record2: SaiseiImage) => {
                 var comp = 0;
-                var n1 = Number(str1.substring(0, 6));
-                var n2 = Number(str2.substring(0, 6));
-                var p1 = str1.indexOf(saisei.imgOrderKey);
-                var p2 = str2.indexOf(saisei.imgOrderKey);
+                var n1 = Number(record1.imgpath.substring(0, 6));
+                var n2 = Number(record2.imgpath.substring(0, 6));
+                var p1 = record1.imgpath.indexOf(saisei.imgOrderKey);
+                var p2 = record2.imgpath.indexOf(saisei.imgOrderKey);
 
                 if (n1 > n2) {
                     comp = -1;
@@ -31,19 +31,28 @@
         }
 
         select = (key: string) => {
-            var result:string[] = new Array<string>();
+            var result: string[][] = new Array<string[]>();
+            var pathList: string[] = new Array<string>();
+            var infoList: string[] = new Array<string>();
             for (var i = 0; i < this.imgPathList.length; i++) {
-                var fileName = this.imgPathList[i];
+                var fileName = this.imgPathList[i].imgpath;
+                var fileInfo = this.imgPathList[i].imginfo;
 
                 if (fileName.length > 0 && fileName.indexOf(key) !== -1) {
-                    result.push(fileName);
+                    pathList.push(fileName);
+                    infoList.push(fileInfo);
                 }
             }
             //console.log("key " + key + " " + result);
+            result.push(pathList);
+            result.push(infoList);
             return result;
         };
-        push = (fileName: string) => {
-            this.imgPathList.push(fileName);
+        push = (imgRec: string[]) => {
+            var record = saisei.imgRecord.getObject();
+            record.imgpath = imgRec[0];
+            record.imginfo = imgRec[1];
+            this.imgPathList.push(record);
         };
         delete = () => { }; // たぶん不要
         length = (): number => {
@@ -166,8 +175,21 @@
         }
     }
 
+    class ImgRecord implements SaiseiImage {
+        imgpath: string;
+        imginfo: string;
+
+        getObject = () => {
+            var result = new ImgRecord();
+            result.imgpath = "";
+            result.imginfo = "";
+            return result;
+        }
+    }
+
     export var imgData = new ImgData();
     export var newsData = new NewsData();
     export var imgRuleData = new ImgRuleData();
     export var locationData = new LocationData();
+    export var imgRecord = new ImgRecord();
 }

@@ -67,7 +67,7 @@
         + '    </div>'
         + '<!-- ui-dialog -->'
         + '<div id="gallery-dialog" title="Dialog Title">'
-        + '    <div class="saisei-gallery-dialog"><img src="images/shell-img001.jpg" alt="jpg photo data" class="saisei-gallery-dialog-img" /></div>'
+        + '    <div class="saisei-gallery-dialog"><img src="images/shell-img001.jpg" alt="jpg photo data" class="saisei-gallery-dialog-img" /><p class="saisei-gallery-dialog-info"></p></div>'
         + '</div>'
         + '</div>'
 
@@ -125,9 +125,9 @@
             }
             
             var selectKey: string = saisei.utils.getKeyByEvent(yyyymmdd, eventName);
-            var imgList: string[] = saisei.model.requestImgData(selectKey);
+            var imgList: string[][] = saisei.model.requestImgData(selectKey);
 
-            $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
+            $(".saisei-gallery-search").trigger("changeImgList", imgList[0].join(",") + "," + imgList[1].join(","));
         }
 
         private reloadPage = (): void => {
@@ -145,6 +145,12 @@
                 width: 500,
                 buttons: [
                     {
+                        text: "花材",
+                        click: function () {
+                            $(".saisei-gallery-dialog-info").toggle();
+                        }
+                    },
+                    {
                         text: "Close",
                         click: function () {
                             $(this).dialog("close");
@@ -159,11 +165,14 @@
                     var tempText: string[] = data.split(",");
                     var title = tempText[0];
                     var imgPath = saisei.utils.getPathFromStyleUri(tempText[1]);
+                    var imgInfo = saisei.utils.getImgInfoFromImgSrc(tempText[1], this.stateMap);
+                    alert(imgInfo);
 
                     // データのある時だけdialog表示
                     if (imgPath.indexOf(".jpg") !== -1) {
                         $(".saisei-gallery-dialog-img").attr('src', imgPath.replace('"', "").replace('"', ""));//IEが自動で""を補完してしまうため除去
                         $("#gallery-dialog").dialog("option", "title", title).dialog("open");
+                        $(".saisei-gallery-dialog-info").text(imgInfo).hide();
                         event.preventDefault();
                     }
 
@@ -359,8 +368,8 @@
                     var values: string[] = saisei.utils.parseTuple(ui.item.value);
                     var eventName = ui.item.label.substring("yyyy年 ".length);
                     var selectKey: string = saisei.utils.getKeyByEvent(values[0], eventName);
-                    var imgList: string[] = saisei.model.requestImgData(selectKey);
-                    $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
+                    var imgList: string[][] = saisei.model.requestImgData(selectKey);
+                    $(".saisei-gallery-search").trigger("changeImgList", imgList[0].join(",") + "," + imgList[1].join(","));
                 }
             });
 
@@ -369,8 +378,8 @@
         private initChange02Handle = ($elem: JQuery): void => {
             $elem.selectmenu({
                 change: function (event, ui) {
-                    var imgList: string[] = saisei.model.requestImgData(ui.item.value);
-                    $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
+                    var imgList: string[][] = saisei.model.requestImgData(ui.item.value);
+                    $(".saisei-gallery-search").trigger("changeImgList", imgList[0].join(",") + "," + imgList[1].join(","));
                 }
             });
         }        
@@ -382,10 +391,13 @@
                     var values: string[] = saisei.utils.parseTuple(ui.item.value);
                     for (var i = 0; (2 * i) < values.length; i++) {
                         var selectKey: string = saisei.utils.getKeyByEvent(values[2 * i], values[2 * i + 1]);
-                        var tempList: string[] = saisei.model.requestImgData(selectKey);
-                        for (var j = 0; j < tempList.length; j++) {
-                            imgList.push(tempList[j]);
-                        }                                               
+                        var tempList: string[][] = saisei.model.requestImgData(selectKey);
+                        for (var j = 0; j < tempList[0].length; j++) {
+                            imgList.push(tempList[0][j]);
+                        }
+                        for (var k = 0; k < tempList[1].length; k++) {
+                            imgList.push(tempList[1][k]);
+                        }
                     }
                     $(".saisei-gallery-search").trigger("changeImgList", imgList.join(","));
                 }
@@ -394,13 +406,13 @@
 
         private getImgListFromEvent = (yyyymmdd: string, eventName: string) => {
             var selectKey: string = saisei.utils.getKeyByEvent(yyyymmdd, eventName);
-            var imgList: string[] = saisei.model.requestImgData(selectKey);
-            return imgList;
+            var imgList: string[][] = saisei.model.requestImgData(selectKey);
+            return imgList[0];
         }
 
         private initChangeImgListHandle = (): void => {
             this.$gallerySearch.bind("changeImgList", (event: JQueryEventObject, imgList: string) => {
-
+                
                 this.initStateMap(imgList);
                 $(".saisei-gallery-image").trigger("changeImgSrc");
 
@@ -444,12 +456,26 @@
         }
 
         private initStateMap = (imgList: string): void => {
-            var list: string[] = imgList.split(",");
-            this.stateMap.imgList = saisei.utils.validateImgList(list);
+            var tempList: string[] = imgList.split(",");
+
+            var srcList: string[] = new Array<string>();
+            var infoList: string[] = new Array<string>();
+            for (var i = 0; i < tempList.length; i++) {
+                //
+                //console.log("tempList[" + i + "] " + tempList[i]);
+                if (i < (tempList.length / 2)) {
+                    srcList.push(tempList[i]);
+                } else {
+                    infoList.push(tempList[i]);
+                }
+
+            }
+            this.stateMap.imgList = saisei.utils.validateImgList(srcList);
+            this.stateMap.imgInfoList = infoList;
 
             this.stateMap.startIndex = 0;   
                      
-            if (list.length > saisei.maxPhotoInPage) {
+            if (srcList.length > saisei.maxPhotoInPage) {
                 this.stateMap.hasMulchPages = true;
             } else {
                 this.stateMap.hasMulchPages = false;
@@ -475,6 +501,7 @@
         hasMulchPages: boolean;
         isEndPage: boolean;
         imgList: string[];
+        imgInfoList: string[];
         startIndex: number;
 
         constructor() {
@@ -482,6 +509,7 @@
             this.hasMulchPages = false;
             this.isEndPage = true;
             this.imgList = new Array<string>();
+            this.imgInfoList = new Array<string>();
             this.startIndex = 0;
         }
     }

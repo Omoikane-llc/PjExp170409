@@ -33,7 +33,7 @@
             var result: string = "";
             var startIndex = styleText.indexOf("url(") + "url(".length;
             var endIndex = styleText.indexOf(")");
-            result = styleText.substring(startIndex, endIndex);// IEでファイル名末尾"(%22)でGETが投げられる場合がある
+            result = styleText.substring(startIndex, endIndex);
             return result;
         }
 
@@ -47,6 +47,19 @@
                 }
             }
             return result;
+        }
+
+        // imgSrcと対になるimgInfoを抽出する
+        getImgInfoFromImgSrc = (imgSrc: string, stateMap: SaiseiGalleryState) => {
+            var srcList = stateMap.imgList;
+            var infoList = stateMap.imgInfoList;
+            for (var i = 0; i < srcList.length; i++) {
+                //console.log(imgSrc.indexOf(srcList[i]) + " srcList[i] " + srcList[i] + " infoList[i] " + infoList[i]);
+                if (imgSrc.indexOf(srcList[i]) > 0) {
+                    return infoList[i];
+                }
+            }
+            return "no imgInfo";
         }
     }
 
